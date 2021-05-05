@@ -72,7 +72,7 @@ for chn in channels:
             print i, init
 #            extraStr += 'yield_bg_sb_bin{0} rateParam sb bg_bin{0} '.format(i) + str(init) + ' [' + str(init*1.2) +  ',' + str(init*1.2) + ']\n'
 #            extraStr += 'yield_bg_sb_bin{0} rateParam sb bg_bin{0} '.format(i) + str(init) + ' [-50,' + str(init*2) + ']\n'
-            extraStr += 'yield_bg_' + chn + '_bin{0}'.format(i) + ' rateParam ' + chn + ' bg_bin{0}'.format(i) + ' '+ str(init) + ' [-50,10000]\n'
+            extraStr += 'yield_bg_' + chn + '_bin{0}'.format(i) + ' rateParam ' + chn + ' bg_bin{0}'.format(i) + ' '+ str(init) + ' [-50,100000]\n'
 #            extraStr += 'yield_bg_' + chn + '_bin{0} rateParam '.format(i) + chn + ' bg_bin{0} '.format(i) + str(init) + ' [-50,1000]\n'
 #            extraStr += 'yield_bg_sb_bin{0} rateParam sb bg_bin{0} '.format(i) + str(init) + '\n'
 #            extraStr += 'yield_bg_' + chn + '_bin{0} rateParam '.format(i) + chn + ' bg_bin{0} 1.\n'.format(i)
