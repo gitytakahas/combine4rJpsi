@@ -8,7 +8,8 @@ import sys
 
 args = sys.argv
 
-shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard/combine/q2_simple.root'
+shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard/sr/tau_rhomass_unrolled_new.root'
+#shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard/sr/tau_rhomass_unrolled_coarse_new.root'
 
 mu = ROOT.Double(1)
 
@@ -20,36 +21,27 @@ if len(args)==2:
 file = ROOT.TFile(shape_file)
 
 
-data_sb = file.Get('sr/data_obs')
-#sig_sb = file.Get('sb/signal')
-#bgbc_sb = file.Get('sb/bg_bc')
-#bkg_sr = file.Get('sr/bg_ul')
-#bkg_sb = file.Get('sb/bg_ul')
-#sf = file.Get('sr/sf').GetBinContent(1)
-#ratio = file.Get('sr/ratio')
+#data_sb = file.Get('inclusive_hp/data_obs')
 
 cb = ch.CombineHarvester()
 
-sig_procs = ['signal']
-bkg_procs = ['bg_bc']
+sig_procs = ['sig_3p']
+bkg_procs = ['bg_bc', 'sig_others', 'dd_bkg']
 
 categories = {
     'sr': [(1, 'sr')],
-    'sb': [(2, 'sb')],
-    'cr1': [(3, 'cr1')],
-    'cr2': [(4, 'cr2')],
     }
 
 
-channels = ['sr', 'sb', 'cr1', 'cr2']
+channels = ['sr']
 
 
 prefix = ['rJpsi']
 era = ['2018']
-Nbins = data_sb.GetXaxis().GetNbins()
+#Nbins = data_sb.GetXaxis().GetNbins()
 
 print 'mu-value = ', mu
-print '# of bins = ', Nbins
+#print '# of bins = ', Nbins
 #print 'sf = ', sf
 
 extraStr = ''
@@ -61,40 +53,24 @@ for chn in channels:
     cb.AddProcesses(['*'], prefix, era, [chn], bkg_procs, categories[chn], False)
     cb.AddProcesses(['90'], prefix, era, [chn], sig_procs, categories[chn], True)
 
-    bg_processes = [ 'bg_bin{}'.format(i+1) for i in range(Nbins) ]
-    cb.AddProcesses(['*'], prefix, era, [chn], bg_processes, categories[chn], False)
-    
-    for i in range(1, Nbins+1):
-        if chn in ['sb', 'cr1', 'cr2']:
-
-            init = file.Get(chn + '/data_obs').GetBinContent(i) - mu*(file.Get(chn + '/signal').GetBinContent(i)) - file.Get(chn + '/bg_bc').GetBinContent(i)
-            
-            print i, init
-#            extraStr += 'yield_bg_sb_bin{0} rateParam sb bg_bin{0} '.format(i) + str(init) + ' [' + str(init*1.2) +  ',' + str(init*1.2) + ']\n'
-#            extraStr += 'yield_bg_sb_bin{0} rateParam sb bg_bin{0} '.format(i) + str(init) + ' [-50,' + str(init*2) + ']\n'
-            extraStr += 'yield_bg_' + chn + '_bin{0}'.format(i) + ' rateParam ' + chn + ' bg_bin{0}'.format(i) + ' '+ str(init) + ' [-50,100000]\n'
-#            extraStr += 'yield_bg_' + chn + '_bin{0} rateParam '.format(i) + chn + ' bg_bin{0} '.format(i) + str(init) + ' [-50,1000]\n'
-#            extraStr += 'yield_bg_sb_bin{0} rateParam sb bg_bin{0} '.format(i) + str(init) + '\n'
-#            extraStr += 'yield_bg_' + chn + '_bin{0} rateParam '.format(i) + chn + ' bg_bin{0} 1.\n'.format(i)
-
-
-        elif chn=='sr':
-#            extraStr += 'correction_sr_bin{0} rateParam sr bg_bin{0} '.format(i) + str(ratio.GetBinContent(i)) + ' [' + str(ratio.GetBinContent(i)) + ']\n'
-            extraStr += 'yield_bg_' + chn + '_bin' + str(i) + ' rateParam ' + chn + ' bg_bin{0} (@0*@1/@2) yield_bg_sb_bin{0},yield_bg_cr1_bin{0},yield_bg_cr2_bin{0}'.format(i) + '\n'
 
 print '>> Adding systematic uncertainties...'
 
 
 #cb.cp().bin_id([1]).process(procs['sig'] + ['ZJ', 'ZL', 'TTJ', 'VV', 'STT', 'STJ', 'TTT', 'ZTT']).AddSyst(
 
-cb.cp().process(['signal', 'bg_bc']).AddSyst(
+cb.cp().process(['sig_3p', 'sig_others', 'bg_bc']).AddSyst(
     cb, 'CMS_lumi', 'lnN', ch.SystMap()(1.025))
 
-cb.cp().process(bkg_procs).AddSyst(
-    cb, 'CMS_bkg', 'lnN', ch.SystMap()(1.05))
+cb.cp().process(['dd_bkg']).AddSyst(
+    cb, 'CMS_bkg', 'lnN', ch.SystMap()(1.30))
 
 
-# mu->tau fakes and QCD norm should be added
+#for hammer in ['a0', 'a1', 'a2', 'b0', 'b1', 'b2', 'c1', 'c2', 'd0', 'd1', 'd2']:
+#    cb.cp().AddSyst( 
+#        cb, 'hammer_ebe_' + hammer, 'shape', ch.SystMap('channel', 'process')
+#        (channels, sig_procs, 1.0))
+
 
 
 print '>> Extracting histograms from input root files...'
@@ -110,8 +86,8 @@ cb.SetGroup('syst', ['.*'])
 cb.SetGroup('lumi', ['CMS_lumi'])
 cb.RemoveGroup('syst', ['CMS_lumi'])
 
-rebin = ch.AutoRebin().SetBinThreshold(0.).SetBinUncertFraction(0.3).SetRebinMode(1).SetPerformRebin(True).SetVerbosity(1)
-rebin.Rebin(cb, cb)
+#rebin = ch.AutoRebin().SetBinThreshold(0.).SetBinUncertFraction(0.3).SetRebinMode(1).SetPerformRebin(True).SetVerbosity(1)
+#rebin.Rebin(cb, cb)
 
 
 print '>> Setting standardised bin names...'
@@ -132,19 +108,20 @@ for chn in channels:  # plus a subdir per channel
 
 print '>> Done!'
 
-outcard = outdir + '/rJpsi_2018_90.txt'
-command = 'combineCards.py'
-
-for cat, clist in categories.items():
-    command += " " + clist[0][1] + '=' + outdir + '/rJpsi_' + clist[0][1] + '_' + str(clist[0][0]) + '_2018_90.txt'
-
-command += " > " + outcard
-
-print command 
-
-os.system(command)
+outcard = outdir + '/rJpsi_sr_1_2018_90.txt'
+#command = 'combineCards.py'
+#
+#for cat, clist in categories.items():
+#    command += " " + clist[0][1] + '=' + outdir + '/rJpsi_' + clist[0][1] + '_' + str(clist[0][0]) + '_2018_90.txt'
+#
+#command += " > " + outcard
+#
+#print command 
+#
+#os.system(command)
 
 # overwrite extra rateParam
+
 if os.path.isfile(outcard):
 
     f = open(outcard, 'a')
@@ -154,6 +131,8 @@ if os.path.isfile(outcard):
 
 command2 = 'text2workspace.py ' + outcard + ' -o ' + outdir + '/workspace_mu' + str(mu).replace('.0','') + '.root -m 90'
 os.system(command2)
+
+
 
 
 #outcard = outdir + '/rJpsi_2018_90.txt'

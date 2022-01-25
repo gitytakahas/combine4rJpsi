@@ -8,3 +8,4 @@ combine -M FitDiagnostics workspace_mu1.root --robustFit=1 --setRobustFitAlgo=Mi
 
 cd -
 
+#python draw.py
