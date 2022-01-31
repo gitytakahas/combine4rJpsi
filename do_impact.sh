@@ -1,5 +1,5 @@
 workspace="workspace_mu1.root"
-toy="-t -1 --expectSignal 1"
+toy="-t -1 --expectSignal 0.71"
 
 cd output/sm_cards/LIMITS/
 

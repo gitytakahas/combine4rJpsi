@@ -66,10 +66,21 @@ cb.cp().process(['dd_bkg']).AddSyst(
     cb, 'CMS_bkg', 'lnN', ch.SystMap()(1.30))
 
 
-#for hammer in ['a0', 'a1', 'a2', 'b0', 'b1', 'b2', 'c1', 'c2', 'd0', 'd1', 'd2']:
-#    cb.cp().AddSyst( 
-#        cb, 'hammer_ebe_' + hammer, 'shape', ch.SystMap('channel', 'process')
-#        (channels, sig_procs, 1.0))
+for hammer in range(0, 9):
+    cb.cp().AddSyst( 
+        cb, 'hammer_ebe_e' + str(hammer), 'shape', ch.SystMap('channel', 'process')
+        (channels, ['sig_3p', 'sig_others', 'dd_bkg'], 1.0))
+
+cb.cp().AddSyst( 
+    cb, 'puweight', 'shape', ch.SystMap('channel', 'process')
+    (channels, ['sig_3p', 'sig_others', 'bg_bc', 'dd_bkg'], 1.0))
+
+
+cb.cp().AddSyst( 
+    cb, 'shape', 'shape', ch.SystMap('channel', 'process')
+    (channels, ['dd_bkg'], 1.0))
+
+
 
 
 
