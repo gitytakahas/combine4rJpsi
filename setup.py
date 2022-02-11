@@ -67,7 +67,7 @@ cb.cp().process(['dd_bkg']).AddSyst(
     cb, 'CMS_bkg', 'lnN', ch.SystMap()(1.30))
 
 cb.cp().process(['bc_jpsi_dst']).AddSyst(
-    cb, 'br_jpsi_hc_over_mu', 'lnN', ch.SystMap()(1.44)) #taken from leptonic channel
+    cb, 'br_jpsi_hc_over_mu', 'lnN', ch.SystMap()(1.38)) #taken from leptonic channel
 
 for hammer in range(0, 9):
     cb.cp().AddSyst( 
