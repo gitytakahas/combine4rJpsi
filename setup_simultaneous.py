@@ -8,10 +8,8 @@ import sys
 
 args = sys.argv
 
-#shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard/sr/tau_rhomass_unrolled_new.root'
 #shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/tau_rhomass_unrolled_new.root'
 shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/tau_rhomass_unrolled_coarse_new.root'
-
 
 file = ROOT.TFile(shape_file)
 
@@ -39,7 +37,6 @@ era = ['2018']
 Nbins = data_sb.GetXaxis().GetNbins()
 
 print '# of bins = ', Nbins
-#print 'sf = ', sf
 
 extraStr = ''
 init_sf = 0.27
@@ -70,19 +67,15 @@ for chn in channels:
             extraStr += 'yield_bg_bin{0} rateParam * bg_bin{0} '.format(i) + str(init) + ' [-10,5000]\n'
 
 
-extraStr += 'ratio_sb_sr rateParam sr bg_* ' + str(init_sf) + ' [0.05,0.6]\n'
+extraStr += 'ratio_sb_sr rateParam sr bg_* ' + str(init_sf) + ' [0.25,0.3]\n'
 #extraStr += 'ratio_sb_sr rateParam sr bg_* ' + str(init_sf) + '\n'
 
 print '>> Adding systematic uncertainties...'
 
 
-#cb.cp().bin_id([1]).process(procs['sig'] + ['ZJ', 'ZL', 'TTJ', 'VV', 'STT', 'STJ', 'TTT', 'ZTT']).AddSyst(
-
 cb.cp().process(sig_procs + bkg_procs).AddSyst(
     cb, 'CMS_lumi', 'lnN', ch.SystMap()(1.025))
 
-#cb.cp().process(['dd_bkg']).AddSyst(
-#    cb, 'CMS_bkg', 'lnN', ch.SystMap()(1.30))
 
 cb.cp().process(['bc_jpsi_dst']).AddSyst(
     cb, 'br_jpsi_hc_over_mu', 'lnN', ch.SystMap()(1.44)) #taken from leptonic channel
@@ -110,16 +103,7 @@ cb.cp().AddSyst(
 
 
 
-#cb.cp().AddSyst( 
-#    cb, 'shape', 'shape', ch.SystMap('channel', 'process')
-#    (channels, ['dd_bkg'], 1.0))
-
-
-
-
-
 print '>> Extracting histograms from input root files...'
-#file = aux_shapes + 'datacard_combine_1p.root'
 
 for chn in channels:
     cb.cp().channel([chn]).ExtractShapes(
@@ -130,6 +114,7 @@ for chn in channels:
 cb.SetGroup('syst', ['.*'])
 cb.SetGroup('lumi', ['CMS_lumi'])
 cb.RemoveGroup('syst', ['CMS_lumi'])
+
 
 #rebin = ch.AutoRebin().SetBinThreshold(0.).SetBinUncertFraction(0.3).SetRebinMode(1).SetPerformRebin(True).SetVerbosity(1)
 #rebin.Rebin(cb, cb)
@@ -155,7 +140,7 @@ print '>> Done!'
 
 outcard = outdir + '/rJpsi_2018_90.txt'
 command = 'combineCards.py sb=' + outdir + '/rJpsi_sr_1_2018_90.txt sr=' + outdir + '/rJpsi_sb_2_2018_90.txt > ' + outcard
-#command = 'combineCards.py sb=' + outdir + '/rJpsi_sb_1_2018_90.txt > ' + outcard
+
 os.system(command)
 
 # overwrite extra rateParam
@@ -169,23 +154,5 @@ if os.path.isfile(outcard):
 command2 = 'text2workspace.py ' + outcard + ' -o ' + outdir + '/workspace_mu1.root -m 90'
 os.system(command2)
 
-
-
-
-
-#outcard = outdir + '/rJpsi_2018_90.txt'
-#command = 'combineCards.py sb=' + outdir + '/rJpsi_sb_1_2018_90.txt sr=' + outdir + '/rJpsi_sr_2_2018_90.txt > ' + outcard
-#os.system(command)
-#
-## overwrite extra rateParam
-#if os.path.isfile(outcard):
-#
-#    f = open(outcard, 'a')
-#    f.write(extraStr)
-#    f.write('* autoMCStats 0 0 1\n')
-#    f.close()
-#
-#command2 = 'text2workspace.py ' + outcard + ' -o ' + outdir + '/workspace.root -m 90'
-#os.system(command2)
 
 
