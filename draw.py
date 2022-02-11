@@ -15,6 +15,12 @@ def ensureDir(directory):
         os.makedirs(directory)
 
 
+shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/tau_rhomass_unrolled_coarse_new.root'
+file_shape = TFile(shape_file)
+data_sb = file_shape.Get('sb/data_obs')
+nbin = data_sb.GetXaxis().GetNbins()
+
+
 
 filename = 'output/sm_cards/LIMITS/fitDiagnostics.root'
 
@@ -28,19 +34,20 @@ process = {
     'total_background':{'name':'total_background'}
 }
 
-#for ibin in range(1, 13):
-#    process['bg_bin' + str(ibin)] = {'name':'bg_bin' + str(ibin)}
+for ibin in range(1, nbin+1):
+    process['bg_bin' + str(ibin)] = {'name':'bg_bin' + str(ibin)}
 
 
 ensureDir('Plots/')
 
-nbin = 20
+#nbin = 20
 
 for ftype in ['prefit', 'fit_s', 'fit_b']:
 #for ftype in ['prefit', 'fit_b']:
 
 
-    for cr in ['rJpsi_sr_1_2018']:
+#    for cr in ['rJpsi_sr_1_2018']:
+    for cr in ['sr', 'sb']:
 #    for cr in ['rJpsi_sr_1_2018']:
 
         hists = {}
@@ -81,7 +88,7 @@ for ftype in ['prefit', 'fit_s', 'fit_b']:
         canvas = TCanvas('canvas_' + ftype + '_' + cr)
 #        canvas.SetLogy()
 
-        frame = TH1F('frame_' + ftype + '_' + cr, 'fname_' + ftype + '_' + cr, nbin, 0, 121)
+        frame = TH1F('frame_' + ftype + '_' + cr, 'fname_' + ftype + '_' + cr, nbin, 0, nbin)
         frame.GetXaxis().SetTitle('Tau rhomasses unrolled bin ID')
         frame.GetYaxis().SetTitle('Events')
   
