@@ -8,8 +8,8 @@ import sys
 
 args = sys.argv
 
-shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard/sr/tau_rhomass_unrolled_new.root'
-#shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard/sr/tau_rhomass_unrolled_coarse_new.root'
+#shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard/sr/tau_rhomass_unrolled_new.root'
+shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/sr/tau_rhomass_unrolled_new.root'
 
 mu = ROOT.Double(1)
 
@@ -26,7 +26,7 @@ file = ROOT.TFile(shape_file)
 cb = ch.CombineHarvester()
 
 sig_procs = ['bc_jpsi_tau_3p']
-bkg_procs = ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_ds', 'dd_bkg']
+bkg_procs = ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst', 'dd_bkg']
 
 categories = {
     'sr': [(1, 'sr')],
@@ -59,28 +59,41 @@ print '>> Adding systematic uncertainties...'
 
 #cb.cp().bin_id([1]).process(procs['sig'] + ['ZJ', 'ZL', 'TTJ', 'VV', 'STT', 'STJ', 'TTT', 'ZTT']).AddSyst(
 
-cb.cp().process(['bc_jpsi_tau_3p', 'bc_jpsi_tau_N3p', 'bc_jpsi_ds', 'bc_others']).AddSyst(
+cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).AddSyst(
     cb, 'CMS_lumi', 'lnN', ch.SystMap()(1.025))
+
 
 cb.cp().process(['dd_bkg']).AddSyst(
     cb, 'CMS_bkg', 'lnN', ch.SystMap()(1.30))
-cb.cp().process(['bc_jpsi_ds']).AddSyst(
+
+cb.cp().process(['bc_jpsi_dst']).AddSyst(
     cb, 'br_jpsi_hc_over_mu', 'lnN', ch.SystMap()(1.44)) #taken from leptonic channel
 
 for hammer in range(0, 9):
     cb.cp().AddSyst( 
         cb, 'hammer_ebe_e' + str(hammer), 'shape', ch.SystMap('channel', 'process')
-        (channels, ['sig_3p', 'sig_others', 'dd_bkg'], 1.0))
+        (channels, ['bc_jpsi_tau_3p', 'bc_jpsi_tau_N3p'], 1.0))
 
 cb.cp().AddSyst( 
     cb, 'puweight', 'shape', ch.SystMap('channel', 'process')
-    (channels, ['sig_3p', 'sig_others', 'bg_bc', 'dd_bkg'], 1.0))
+    (channels, sig_procs + bkg_procs, 1.0))
 
 
 cb.cp().AddSyst( 
     cb, 'shape', 'shape', ch.SystMap('channel', 'process')
     (channels, ['dd_bkg'], 1.0))
 
+cb.cp().AddSyst( 
+    cb, 'muSFID', 'shape', ch.SystMap('channel', 'process')
+    (channels, sig_procs + bkg_procs, 1.0))
+
+cb.cp().AddSyst( 
+    cb, 'muSFReco', 'shape', ch.SystMap('channel', 'process')
+    (channels, sig_procs + bkg_procs, 1.0))
+
+cb.cp().AddSyst( 
+    cb, 'weight_ctau', 'shape', ch.SystMap('channel', 'process')
+    (channels, sig_procs + bkg_procs, 1.0))
 
 
 
