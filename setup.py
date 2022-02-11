@@ -63,8 +63,12 @@ cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).Add
     cb, 'CMS_lumi', 'lnN', ch.SystMap()(1.025))
 
 
+# This is from Stefano's number: https://sleontsi.web.cern.ch/sleontsi/Bc+/Yuta/
+
 cb.cp().process(['dd_bkg']).AddSyst(
-    cb, 'CMS_bkg', 'lnN', ch.SystMap()(1.30))
+    cb, 'CMS_bkg', 'lnN', ch.SystMap()((0.952, 1.149)))
+
+
 
 cb.cp().process(['bc_jpsi_dst']).AddSyst(
     cb, 'br_jpsi_hc_over_mu', 'lnN', ch.SystMap()(1.38)) #taken from leptonic channel
