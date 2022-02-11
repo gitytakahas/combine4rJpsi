@@ -15,7 +15,6 @@ file = ROOT.TFile(shape_file)
 
 
 data_sb = file.Get('sb/data_obs')
-sig_sb = file.Get('sb/bc_jpsi_tau_3p')
 
 cb = ch.CombineHarvester()
 
