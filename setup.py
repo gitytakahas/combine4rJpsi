@@ -8,8 +8,8 @@ import sys
 
 args = sys.argv
 
-#shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard/sr/tau_rhomass_unrolled_new.root'
-shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/sr/tau_rhomass_unrolled_new.root'
+shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard/sr/tau_rhomass_unrolled_new.root'
+#shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/sr/tau_rhomass_unrolled_new.root'
 
 mu = ROOT.Double(1)
 
@@ -69,20 +69,21 @@ cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).Add
 # This is from Stefano's number: https://sleontsi.web.cern.ch/sleontsi/Bc+/Yuta/
 
 cb.cp().process(['dd_bkg']).AddSyst(
+
     cb, 'CMS_bkg', 'lnN', ch.SystMap()((0.952, 1.149)))
 
-cb.cp().process(['bc_jpsi_dst']).AddSyst(
-    cb, 'br_jpsi_hc_over_mu', 'lnN', ch.SystMap()(1.38)) #taken from leptonic channel
+cb.cp().AddSyst(
+    cb, 'br_BcJpsiDst', 'shape', ch.SystMap('channel', 'process')
+    (channels, [ 'bc_jpsi_dst', 'dd_bkg'], 1.0))
 
 for hammer in range(0, 9):
     cb.cp().AddSyst( 
         cb, 'hammer_ebe_e' + str(hammer), 'shape', ch.SystMap('channel', 'process')
-        (channels, ['bc_jpsi_tau_3p', 'bc_jpsi_tau_N3p'], 1.0))
+        (channels, ['bc_jpsi_tau_3p', 'bc_jpsi_tau_N3p', 'dd_bkg'], 1.0))
 
 cb.cp().AddSyst( 
     cb, 'puweight', 'shape', ch.SystMap('channel', 'process')
     (channels, sig_procs + bkg_procs, 1.0))
-
 
 cb.cp().AddSyst( 
     cb, 'shape', 'shape', ch.SystMap('channel', 'process')
@@ -99,8 +100,6 @@ cb.cp().AddSyst(
 cb.cp().AddSyst( 
     cb, 'weight_ctau', 'shape', ch.SystMap('channel', 'process')
     (channels, sig_procs + bkg_procs, 1.0))
-
-
 
 
 print '>> Extracting histograms from input root files...'
