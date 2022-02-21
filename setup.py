@@ -63,7 +63,10 @@ cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).Add
     cb, 'CMS_lumi', 'lnN', ch.SystMap()(1.025))
 
 cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).AddSyst(
-    cb, 'CMS_taureco', 'lnN', ch.SystMap()(1.2))
+    cb, 'CMS_taureco', 'lnN', ch.SystMap()(1.05))
+
+cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).AddSyst(
+    cb, 'CMS_xgbseff', 'lnN', ch.SystMap()(1.05))
 
 
 # This is from Stefano's number: https://sleontsi.web.cern.ch/sleontsi/Bc+/Yuta/
