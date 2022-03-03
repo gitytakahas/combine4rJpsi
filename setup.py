@@ -8,7 +8,7 @@ import sys
 
 args = sys.argv
 
-shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard/sr/tau_rhomass_unrolled_new.root'
+shape_file = '/work/${USER}/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard/sr/tau_rhomass_unrolled_new.root'
 #shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/sr/tau_rhomass_unrolled_new.root'
 
 mu = ROOT.Double(1)
@@ -103,6 +103,10 @@ cb.cp().AddSyst(
 cb.cp().AddSyst( 
     cb, 'weight_ctau', 'shape', ch.SystMap('channel', 'process')
     (channels, sig_procs + bkg_procs, 1.0))
+
+cb.cp().AddSyst( 
+    cb, 'tauBr', 'shape', ch.SystMap('channel', 'process')
+    (channels, sig_procs, 1.0))
 
 
 print '>> Extracting histograms from input root files...'
