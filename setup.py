@@ -7,8 +7,8 @@ import os
 import sys
 
 args = sys.argv
-
-shape_file = '/work/${USER}/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard/sr/tau_rhomass_unrolled_new.root'
+shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard_fromYuta20220317_sr4p3_sb2p5-3p5_lp2-2p5_fixed/sr/tau_rhomass_unrolled_new.root'   
+#shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard/sr/tau_rhomass_unrolled_new.root'
 #shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/sr/tau_rhomass_unrolled_new.root'
 
 mu = ROOT.Double(1)
@@ -62,12 +62,13 @@ print '>> Adding systematic uncertainties...'
 cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).AddSyst(
     cb, 'CMS_lumi', 'lnN', ch.SystMap()(1.025))
 
-cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).AddSyst(
-    cb, 'CMS_taureco', 'lnN', ch.SystMap()(1.05))
+cb.cp().AddSyst(
+    cb, 'tauReco', 'shape', ch.SystMap('channel', 'process')
+    (channels, sig_procs + bkg_procs, 1.0))
 
-cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).AddSyst(
-    cb, 'CMS_xgbseff', 'lnN', ch.SystMap()(1.05))
-
+cb.cp().AddSyst(
+    cb, 'xgbsEff', 'shape', ch.SystMap('channel', 'process')
+    (channels, sig_procs + bkg_procs, 1.0))
 
 # This is from Stefano's number: https://sleontsi.web.cern.ch/sleontsi/Bc+/Yuta/
 
