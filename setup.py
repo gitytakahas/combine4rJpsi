@@ -7,7 +7,8 @@ import os
 import sys
 
 args = sys.argv
-shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard_fromYuta20220317_sr4p3_sb2p5-3p5_lp2-2p5_fixed/sr/tau_rhomass_unrolled_new.root'   
+shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard_fromYuta20220317_sr4p3_sb2p5-3p5_lp2-2p5_fixed_Federica/sr/tau_rhomass_unrolled_coarse_new.root' 
+#shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard_fromYuta20220317_sr4p3_sb2p5-3p5_lp2-2p5_fixed/sr/tau_rhomass_unrolled_new.root'   
 #shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard/sr/tau_rhomass_unrolled_new.root'
 #shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/sr/tau_rhomass_unrolled_new.root'
 
@@ -59,8 +60,8 @@ print '>> Adding systematic uncertainties...'
 
 #cb.cp().bin_id([1]).process(procs['sig'] + ['ZJ', 'ZL', 'TTJ', 'VV', 'STT', 'STJ', 'TTT', 'ZTT']).AddSyst(
 
-cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).AddSyst(
-    cb, 'CMS_lumi', 'lnN', ch.SystMap()(1.025))
+#cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).AddSyst(
+#    cb, 'CMS_lumi', 'lnN', ch.SystMap()(1.025))
 
 cb.cp().AddSyst(
     cb, 'tauReco', 'shape', ch.SystMap('channel', 'process')
@@ -73,8 +74,7 @@ cb.cp().AddSyst(
 # This is from Stefano's number: https://sleontsi.web.cern.ch/sleontsi/Bc+/Yuta/
 
 cb.cp().process(['dd_bkg']).AddSyst(
-
-    cb, 'CMS_bkg', 'lnN', ch.SystMap()((0.952, 1.149)))
+    cb, 'CMS_bkg', 'lnN', ch.SystMap()((0.98, 1.04)))
 
 cb.cp().AddSyst(
     cb, 'br_BcJpsiDst', 'shape', ch.SystMap('channel', 'process')
@@ -120,8 +120,8 @@ for chn in channels:
 
 
 cb.SetGroup('syst', ['.*'])
-cb.SetGroup('lumi', ['CMS_lumi'])
-cb.RemoveGroup('syst', ['CMS_lumi'])
+#cb.SetGroup('lumi', ['CMS_lumi'])
+#cb.RemoveGroup('syst', ['CMS_lumi'])
 
 #rebin = ch.AutoRebin().SetBinThreshold(0.).SetBinUncertFraction(0.3).SetRebinMode(1).SetPerformRebin(True).SetVerbosity(1)
 #rebin.Rebin(cb, cb)
