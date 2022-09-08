@@ -8,15 +8,10 @@ import sys
 
 args = sys.argv
 
-shape_file = '/work/${USER}/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard/sr/tau_rhomass_unrolled_new.root'
+shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine/2018/tau_rhomass_unrolled_coarse.root'
+#shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine/2018/tau_rhomass_unrolled.root'
+#shape_file = '/work/${USER}/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard/sr/tau_rhomass_unrolled_new.root'
 #shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/sr/tau_rhomass_unrolled_new.root'
-
-mu = ROOT.Double(1)
-
-if len(args)==2:
-    mu = ROOT.Double(args[1])
-
-
 
 file = ROOT.TFile(shape_file)
 
@@ -40,7 +35,6 @@ prefix = ['rJpsi']
 era = ['2018']
 #Nbins = data_sb.GetXaxis().GetNbins()
 
-print 'mu-value = ', mu
 #print '# of bins = ', Nbins
 #print 'sf = ', sf
 
@@ -72,14 +66,13 @@ cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).Add
 # This is from Stefano's number: https://sleontsi.web.cern.ch/sleontsi/Bc+/Yuta/
 
 cb.cp().process(['dd_bkg']).AddSyst(
-
     cb, 'CMS_bkg', 'lnN', ch.SystMap()((0.952, 1.149)))
 
 cb.cp().AddSyst(
     cb, 'br_BcJpsiDst', 'shape', ch.SystMap('channel', 'process')
     (channels, [ 'bc_jpsi_dst', 'dd_bkg'], 1.0))
 
-for hammer in range(0, 9):
+for hammer in range(0, 10):
     cb.cp().AddSyst( 
         cb, 'hammer_ebe_e' + str(hammer), 'shape', ch.SystMap('channel', 'process')
         (channels, ['bc_jpsi_tau_3p', 'bc_jpsi_tau_N3p', 'dd_bkg'], 1.0))
@@ -118,12 +111,26 @@ for chn in channels:
         '$BIN/$PROCESS', '$BIN/$PROCESS_$SYSTEMATIC')
 
 
-cb.SetGroup('syst', ['.*'])
-cb.SetGroup('lumi', ['CMS_lumi'])
-cb.RemoveGroup('syst', ['CMS_lumi'])
 
 #rebin = ch.AutoRebin().SetBinThreshold(0.).SetBinUncertFraction(0.3).SetRebinMode(1).SetPerformRebin(True).SetVerbosity(1)
-#rebin.Rebin(cb, cb)
+
+# to be robust for the bias!!
+rebin = ch.AutoRebin().SetBinThreshold(0.).SetBinUncertFraction(0.2).SetRebinMode(1).SetPerformRebin(True).SetVerbosity(1)
+rebin.Rebin(cb, cb)
+
+
+
+bbb = ch.BinByBinFactory()
+bbb.SetAddThreshold(0.15).SetFixNorm(False)
+
+bbb.AddBinByBin(cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']), cb)
+
+
+cb.SetGroup('syst', ['.*'])
+cb.SetGroup('bbb', ['CMS_rJpsi_.*_bin_.*'])
+cb.SetGroup('lumi', ['CMS_lumi'])
+cb.RemoveGroup('syst', ['CMS_lumi', 'CMS_rJpsi_.*_bin_.*'])
+
 
 
 print '>> Setting standardised bin names...'
@@ -165,7 +172,7 @@ if os.path.isfile(outcard):
     f.write('* autoMCStats 0 1\n')
     f.close()
 
-command2 = 'text2workspace.py ' + outcard + ' -o ' + outdir + '/workspace_mu' + str(mu).replace('.0','') + '.root -m 90'
+command2 = 'text2workspace.py ' + outcard + ' -o ' + outdir + '/workspace.root -m 90'
 os.system(command2)
 
 
