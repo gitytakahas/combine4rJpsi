@@ -7,7 +7,8 @@ import os
 import sys
 
 args = sys.argv
-shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard_fromYuta20220317_sr4p3_sb2p5-3p5_lp2-2p5_fixed_Federica/sr/tau_rhomass_unrolled_coarse_new.root' 
+shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard_fromYuta20220317_sr4p3_sb2p5-3p5_lp2-2p5_fixed_Federica_0p078_weightLuigi_systBkg/sr/tau_rhomass_unrolled_coarse_new.root'
+#shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard_fromYuta20220317_sr4p3_sb2p5-3p5_lp2-2p5_fixed_Federica/sr/tau_rhomass_unrolled_coarse_new.root' 
 #shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard_fromYuta20220317_sr4p3_sb2p5-3p5_lp2-2p5_fixed/sr/tau_rhomass_unrolled_new.root'   
 #shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard/sr/tau_rhomass_unrolled_new.root'
 #shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/sr/tau_rhomass_unrolled_new.root'
@@ -93,6 +94,10 @@ cb.cp().AddSyst(
     cb, 'shape', 'shape', ch.SystMap('channel', 'process')
     (channels, ['dd_bkg'], 1.0))
 
+cb.cp().AddSyst(
+    cb, 'bkgExtra', 'shape', ch.SystMap('channel', 'process')
+    (channels, ['dd_bkg'], 1.0))
+
 cb.cp().AddSyst( 
     cb, 'muSFID', 'shape', ch.SystMap('channel', 'process')
     (channels, sig_procs + bkg_procs, 1.0))
@@ -109,6 +114,9 @@ cb.cp().AddSyst(
     cb, 'tauBr', 'shape', ch.SystMap('channel', 'process')
     (channels, sig_procs, 1.0))
 
+cb.cp().AddSyst(
+    cb, 'BcPt', 'shape', ch.SystMap('channel', 'process')
+    (channels, sig_procs + bkg_procs, 1.0))
 
 print '>> Extracting histograms from input root files...'
 #file = aux_shapes + 'datacard_combine_1p.root'
