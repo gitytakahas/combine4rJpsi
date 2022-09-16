@@ -1,5 +1,7 @@
-workspace="workspace_mu1.root"
+workspace="workspace.root"
 toy="-t -1 --expectSignal 0.71"
+
+python setup.py
 
 cd output/sm_cards/LIMITS/
 

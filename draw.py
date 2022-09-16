@@ -16,10 +16,17 @@ def ensureDir(directory):
 
 
 #shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/tau_rhomass_unrolled_coarse_new.root'
+<<<<<<< HEAD
 shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard_fromYuta20220317_sr4p3_sb2p5-3p5_lp2-2p5_fixed_Federica/sr/tau_rhomass_unrolled_new.root'
 file_shape = TFile(shape_file)
 data_sb = file_shape.Get('sb/data_obs')
 nbin = data_sb.GetXaxis().GetNbins()
+=======
+#shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/tau_rhomass_unrolled_new.root'
+#file_shape = TFile(shape_file)
+#data_sb = file_shape.Get('sb/data_obs')
+#nbin = data_sb.GetXaxis().GetNbins()
+>>>>>>> origin/main
 
 
 
@@ -43,7 +50,7 @@ ensureDir('Plots/')
 
 #nbin = 20
 
-for ftype in ['prefit', 'fit_s', 'fit_b']:
+for ftype in ['fit_s', 'prefit']:
 #for ftype in ['prefit', 'fit_b']:
 
 
@@ -65,7 +72,7 @@ for ftype in ['prefit', 'fit_s', 'fit_b']:
             hist.SetFillStyle(0)
 #            print file
             
-#            nbin = hist.GetXaxis().GetNbins()
+            nbin = hist.GetXaxis().GetNbins()
 #            print nbin
             
 #            if var['name'].find('bin')!=-1:
