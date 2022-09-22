@@ -65,7 +65,7 @@ void examplews(){
     
     double val = data_histo_sb->GetBinContent(i) - bc_jpsi_tau_3p->GetBinContent(i) - bc_jpsi_tau_N3p->GetBinContent(i) - bc_others->GetBinContent(i) - bc_jpsi_dst->GetBinContent(i);
     //    double unc = bc_jpsi_tau_3p->GetBinContent(i) + bc_jpsi_tau_N3p->GetBinContent(i);
-    double unc = TMath::Sqrt(data_histo_sb->GetBinContent(i));
+    double unc = TMath::Sqrt(val);
 
     std::cout << i << " " << val << " " << unc << std::endl;
     
@@ -119,14 +119,14 @@ void examplews(){
 
 
 
-  //  RooRealVar efficiency("efficiency", "efficiency nuisance parameter",0.);
+  RooRealVar efficiency("efficiency", "efficiency nuisance parameter",0.);
 
-  //  RooFormulaVar TF("TF","Trasnfer factor","2*0.092*TMath::Power(1.02,@0)",RooArgList(efficiency) );
+  RooFormulaVar TF("TF","Trasnfer factor","0.092*2*TMath::Power(1.04,@0)",RooArgList(efficiency) );
 
 
 
-  RooRealVar TF("TF","Transfer factor",0.092); 
-  TF.setConstant(); 
+  //  RooRealVar TF("TF","Transfer factor",0.092); 
+  //  TF.setConstant(); 
 
   std::vector<RooFormulaVar> bins_sr; 
   for(int i=1; i<=nbins; i++){
