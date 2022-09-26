@@ -59,15 +59,4 @@ bg_bin22_sb  flatParam
 bg_bin23_sb  flatParam
 bg_bin24_sb  flatParam
 bg_bin25_sb  flatParam
-bg_bin26_sb  flatParam
-bg_bin27_sb  flatParam
-bg_bin28_sb  flatParam
-bg_bin29_sb  flatParam
-bg_bin30_sb  flatParam
-bg_bin31_sb  flatParam
-bg_bin32_sb  flatParam
-bg_bin33_sb  flatParam
-bg_bin34_sb  flatParam
-bg_bin35_sb  flatParam
-bg_bin36_sb  flatParam
 
