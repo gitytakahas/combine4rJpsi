@@ -8,7 +8,7 @@ import sys
 
 args = sys.argv
 
-shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4/2018/tau_rhomass_unrolled_coarse.root'
+shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/2018/tau_rhomass_unrolled_coarse.root'
 #shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4p3/2018/tau_rhomass_unrolled_coarse.root'
 #shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard_fromYuta20220317_sr4p3_sb2p5-3p5_lp2-2p5_fixed_Federica_0p078_weightLuigi_systBkg/sr/tau_rhomass_unrolled_coarse_new.root'
 

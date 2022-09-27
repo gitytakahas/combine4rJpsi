@@ -66,13 +66,15 @@ void examplews(){
        name_string=="bc_jpsi_tau_3p" || 
        name_string=="bc_jpsi_tau_N3p"){
 
-      std::cout << "This is IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+      //      std::cout << "This is IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
 
       for(int ibin=1; ibin <= nbins; ibin++){
 
 	for(int isUp=0; isUp<2; isUp++){
 	  
 	  TString bbb_string = h->GetName();
+	  bbb_string += "_";
+	  bbb_string += h->GetName();
 	  bbb_string += "_bbb";
 	  bbb_string += ibin;
 	  bbb_string += (isUp==0) ? "Up" : "Down";
@@ -93,7 +95,6 @@ void examplews(){
 	      histo.SetBinError(jbin, h->GetBinError(jbin));
 	    }
 	  }
-
 
 	  RooDataHist rdh_bbb(bbb_string,"sb",vars,&histo);
 	  wspace.import(rdh_bbb);
@@ -212,6 +213,8 @@ void examplews(){
 	for(int isUp=0; isUp<2; isUp++){
 	  
 	  TString bbb_string = h->GetName();
+	  bbb_string += "_";
+	  bbb_string += h->GetName();
 	  bbb_string += "_bbb";
 	  bbb_string += ibin;
 	  bbb_string += (isUp==0) ? "Up" : "Down";
