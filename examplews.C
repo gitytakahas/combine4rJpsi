@@ -43,7 +43,8 @@ void examplews(){
     TH1 *h = (TH1*)key_sb->ReadObj();
 
     TString name_string = h->GetName();
-    name_string += "_sb";
+    TString name_rdhstring = name_string;
+    name_rdhstring += "_sb";
 
     std::cout << name_string << std::endl;
 
@@ -56,8 +57,63 @@ void examplews(){
 //    }
 
 //    RooDataHist rdh(name_string,"sb",vars,&histo);
-    RooDataHist rdh(name_string,"sb",vars,h);
+    RooDataHist rdh(name_rdhstring,"sb",vars,h);
     wspace.import(rdh);
+
+    
+    if(name_string=="bc_others" || 
+       name_string=="bc_jpsi_dst" || 
+       name_string=="bc_jpsi_tau_3p" || 
+       name_string=="bc_jpsi_tau_N3p"){
+
+      std::cout << "This is IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+
+      for(int ibin=1; ibin <= nbins; ibin++){
+
+	for(int isUp=0; isUp<2; isUp++){
+	  
+	  TString bbb_string = h->GetName();
+	  bbb_string += "_bbb";
+	  bbb_string += ibin;
+	  bbb_string += (isUp==0) ? "Up" : "Down";
+	  bbb_string += "_sb";
+	
+	  TH1F histo(bbb_string, bbb_string, nbins, xmin, xmax);	
+	  
+	  for(int jbin=1; jbin <= nbins; jbin++){
+	    if(jbin==ibin){
+	      if(isUp==0){
+		histo.SetBinContent(jbin, h->GetBinContent(jbin) + h->GetBinError(jbin));
+	      }else{
+		histo.SetBinContent(jbin, h->GetBinContent(jbin) - h->GetBinError(jbin));
+	      }
+	      histo.SetBinError(jbin, h->GetBinError(jbin)*histo.GetBinContent(jbin)/h->GetBinContent(jbin));
+	    }else{
+	      histo.SetBinContent(jbin, h->GetBinContent(jbin));
+	      histo.SetBinError(jbin, h->GetBinError(jbin));
+	    }
+	  }
+
+
+	  RooDataHist rdh_bbb(bbb_string,"sb",vars,&histo);
+	  wspace.import(rdh_bbb);
+	  
+	}
+      }
+
+//
+//    TH1F histo(name_string, name_string,nbins,xmin, xmax);
+//    for(int i=1; i<=nbins; i++){
+//      histo.SetBinContent(i,histo_tmp->GetBinContent(i));
+//      histo.SetBinError(i,histo_tmp->GetBinError(i));
+//    }
+
+
+      
+       
+    }
+    
+
   }
     
   TH1F* data_histo_sb = (TH1F*)file_sb->Get("data_obs");
@@ -124,7 +180,8 @@ void examplews(){
 
     TH1F *h = (TH1F*)key_sr->ReadObj();
     TString name_string = h->GetName();
-    name_string += "_sr";
+    TString name_rdhstring = name_string;
+    name_rdhstring += "_sr";
 
 
 //    TH1F*  histo_tmp = (TH1F*)file_sr->Get(h->GetName());
@@ -137,8 +194,69 @@ void examplews(){
 //
 //    RooDataHist rdh(name_string,"sb",vars,&histo);
 
-    RooDataHist rdh(name_string,"sr",vars,h);
+    RooDataHist rdh(name_rdhstring,"sr",vars,h);
     wspace.import(rdh);
+
+
+
+    /// bbb uncertainties
+
+    if(name_string=="bc_others" || 
+       name_string=="bc_jpsi_dst" || 
+       name_string=="bc_jpsi_tau_3p" || 
+       name_string=="bc_jpsi_tau_N3p"){
+
+
+      for(int ibin=1; ibin <= nbins; ibin++){
+
+	for(int isUp=0; isUp<2; isUp++){
+	  
+	  TString bbb_string = h->GetName();
+	  bbb_string += "_bbb";
+	  bbb_string += ibin;
+	  bbb_string += (isUp==0) ? "Up" : "Down";
+	  bbb_string += "_sr";
+	
+	  TH1F histo(bbb_string, bbb_string, nbins, xmin, xmax);	
+	  
+	  for(int jbin=1; jbin <= nbins; jbin++){
+	    if(jbin==ibin){
+	      if(isUp==0){
+		histo.SetBinContent(jbin, h->GetBinContent(jbin) + h->GetBinError(jbin));
+	      }else{
+		histo.SetBinContent(jbin, h->GetBinContent(jbin) - h->GetBinError(jbin));
+	      }
+	      histo.SetBinError(jbin, h->GetBinError(jbin)*histo.GetBinContent(jbin)/h->GetBinContent(jbin));
+	    }else{
+	      histo.SetBinContent(jbin, h->GetBinContent(jbin));
+	      histo.SetBinError(jbin, h->GetBinError(jbin));
+	    }
+	  }
+
+
+	  RooDataHist rdh_bbb(bbb_string,"sr",vars,&histo);
+	  wspace.import(rdh_bbb);
+	  
+	}
+      }
+
+//
+//    TH1F histo(name_string, name_string,nbins,xmin, xmax);
+//    for(int i=1; i<=nbins; i++){
+//      histo.SetBinContent(i,histo_tmp->GetBinContent(i));
+//      histo.SetBinError(i,histo_tmp->GetBinError(i));
+//    }
+
+
+      
+       
+    }
+    
+
+
+
+
+
   }
 
   TH1F* data_histo_sr = (TH1F*)file_sr->Get("data_obs");
@@ -159,13 +277,13 @@ void examplews(){
 
 
 
-  RooRealVar efficiency("efficiency", "efficiency nuisance parameter",0.);
+  //  RooRealVar efficiency("efficiency", "efficiency nuisance parameter",0.);
 
-  RooFormulaVar TF("TF","Trasnfer factor","0.092*2*TMath::Power(1.04,@0)",RooArgList(efficiency) );
+  //  RooFormulaVar TF("TF","Trasnfer factor","0.092",RooArgList(efficiency) );
 
 
 
-  //  RooRealVar TF("TF","Transfer factor",0.092); 
+  RooRealVar TF("TF","Transfer factor",0.092); 
   //  TF.setConstant(); 
 
   std::vector<RooFormulaVar> bins_sr; 
@@ -190,6 +308,64 @@ void examplews(){
 
   wspace.import(rph_fakes_sr);
   wspace.import(rph_fakes_sr_norm,RooFit::RecycleConflictNodes());
+
+  // shape for the fake estimates: 
+
+  TH1F fakes_param_up("fakes_ParamUp_sr","", nbins, xmin, xmax);
+  TH1F fakes_param_down("fakes_ParamDown_sr","", nbins, xmin, xmax);
+
+  double p0 = 0.871;
+  double p1 = 0.009;
+
+
+  for(int i=1; i<=nbins; i++){
+    //    float perc = (fakes_up_ch1_tmp->GetBinContent(i))/fakes_histo_ch2->GetBinContent(i)      ;
+    //    std::cout<<"percentage "<<perc<<std::endl;
+    double perc_up = p0 + p1*i;
+    double perc_down = 2 - p0 - p1*i;
+    
+    fakes_param_up.SetBinContent(i, bins_sr[i-1].getVal()*perc_up);
+    fakes_param_down.SetBinContent(i, bins_sr[i-1].getVal()*perc_down);
+
+  }
+  
+  RooDataHist rdh_fakes_param_up("fakes_ParamUp_sr","Bkg sys up",vars,&fakes_param_up);
+  wspace.import(rdh_fakes_param_up);
+
+  RooDataHist rdh_fakes_param_down("fakes_ParamDown_sr","Bkg sys down",vars,&fakes_param_down);
+  wspace.import(rdh_fakes_param_down);
+
+
+
+  // shape for the fake estimates (bbb): 
+
+  TH1F fakes_bbb_up("fakes_bbbUp_sr","", nbins, xmin, xmax);
+  TH1F fakes_bbb_down("fakes_bbbDown_sr","", nbins, xmin, xmax);
+
+  TFile *file_ratio = new TFile("syst_bkg/tau_rhomass_unrolled_coarse_ratio.root");
+  TH1F* ratio_hist = (TH1F*) file_ratio->Get("data_obs_sr_xl");
+
+  for(int i=1; i<=nbins; i++){
+    //    float perc = (fakes_up_ch1_tmp->GetBinContent(i))/fakes_histo_ch2->GetBinContent(i)      ;
+    //    std::cout<<"percentage "<<perc<<std::endl;
+    double perc_up = ratio_hist->GetBinContent(i);
+    double perc_down = 2 - ratio_hist->GetBinContent(i);
+    
+    fakes_bbb_up.SetBinContent(i, bins_sr[i-1].getVal()*perc_up);
+    fakes_bbb_down.SetBinContent(i, bins_sr[i-1].getVal()*perc_down);
+
+  }
+  
+  RooDataHist rdh_fakes_bbb_up("fakes_bbbUp_sr","Bkg sys up",vars,&fakes_bbb_up);
+  wspace.import(rdh_fakes_bbb_up);
+
+  RooDataHist rdh_fakes_bbb_down("fakes_bbbDown_sr","Bkg sys down",vars,&fakes_bbb_down);
+  wspace.import(rdh_fakes_bbb_down);
+  
+  file_ratio->Close();
+
+
+
 
 
   fOut->cd();
