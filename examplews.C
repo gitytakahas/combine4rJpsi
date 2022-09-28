@@ -23,13 +23,12 @@ void examplews(){
   // control region 
   //////////////////////////////////
 
-  TFile *file_sb = new TFile("/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/2018/tau_rhomass_unrolled_coarse_sb.root");
-  //TFile *file_sb = new TFile("output/sm_cards/LIMITS/common/rJpsi_sb_2_2018_90.input.root");
-  //  file_sb->cd("rJpsi_sb_2_2018");
-  //  TDirectory* dir_sb = gDirectory;
+  TFile *input_file = new TFile("/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/2018/tau_rhomass_unrolled_coarse.root");
+  input_file->cd("sb");
+  TDirectory* dir_sb = gDirectory;
 
   //Loop on all the histos
-  TIter next_sb(file_sb->GetListOfKeys());
+  TIter next_sb(dir_sb->GetListOfKeys());
   TKey *key_sb;
 
   while ((key_sb = (TKey*)next_sb())) {
@@ -48,7 +47,7 @@ void examplews(){
 
     std::cout << name_string << std::endl;
 
-//    TH1F*  histo_tmp = (TH1F*)file_sb->Get(h->GetName());
+//    TH1F*  histo_tmp = (TH1F*)input_file->Get(h->GetName());
 //
 //    TH1F histo(name_string, name_string,nbins,xmin, xmax);
 //    for(int i=1; i<=nbins; i++){
@@ -80,7 +79,7 @@ void examplews(){
 	  bbb_string += (isUp==0) ? "Up" : "Down";
 	  bbb_string += "_sb";
 	
-	  TH1F histo(bbb_string, bbb_string, nbins, xmin, xmax);	
+	  TH1D histo(bbb_string, bbb_string, nbins, xmin, xmax);	
 	  
 	  for(int jbin=1; jbin <= nbins; jbin++){
 	    if(jbin==ibin){
@@ -117,11 +116,11 @@ void examplews(){
 
   }
     
-  TH1F* data_histo_sb = (TH1F*)file_sb->Get("data_obs");
-  TH1F* bc_jpsi_tau_3p_sb = (TH1F*)file_sb->Get("bc_jpsi_tau_3p");
-  TH1F* bc_jpsi_tau_N3p_sb = (TH1F*)file_sb->Get("bc_jpsi_tau_N3p");
-  TH1F* bc_others_sb = (TH1F*)file_sb->Get("bc_others");
-  TH1F* bc_jpsi_dst_sb = (TH1F*)file_sb->Get("bc_jpsi_dst");
+  TH1D* data_histo_sb = (TH1D*)dir_sb->Get("data_obs");
+  TH1D* bc_jpsi_tau_3p_sb = (TH1D*)dir_sb->Get("bc_jpsi_tau_3p");
+  TH1D* bc_jpsi_tau_N3p_sb = (TH1D*)dir_sb->Get("bc_jpsi_tau_N3p");
+  TH1D* bc_others_sb = (TH1D*)dir_sb->Get("bc_others");
+  TH1D* bc_jpsi_dst_sb = (TH1D*)dir_sb->Get("bc_jpsi_dst");
 
   // fakes
   std::vector<RooRealVar> bins; 
@@ -165,29 +164,32 @@ void examplews(){
   ///////////////////////////////////////
 
 
-  TFile *file_sr = new TFile("/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/2018/tau_rhomass_unrolled_coarse_sr.root");
+  //  TFile *file_sr = new TFile("/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/2018/tau_rhomass_unrolled_coarse_sr.root");
   //TFile *file_sr = new TFile("output/sm_cards/LIMITS/common/rJpsi_sr_1_2018_90.input.root");
-  //  file_sr->cd("rJpsi_sr_2_2018");
-  //  TDirectory* dir_sr = gDirectory;
+
+  input_file->cd();
+  
+  input_file->cd("sr");
+  TDirectory* dir_sr = gDirectory;
 
 
   //Loop on all the histos
-  TIter next_sr(file_sr->GetListOfKeys());
+  TIter next_sr(dir_sr->GetListOfKeys());
   TKey *key_sr;
   while ((key_sr = (TKey*)next_sr())) {
 
     TClass *cl = gROOT->GetClass(key_sr->GetClassName());
     if (!cl->InheritsFrom("TH1")) continue;
 
-    TH1F *h = (TH1F*)key_sr->ReadObj();
+    TH1D *h = (TH1D*)key_sr->ReadObj();
     TString name_string = h->GetName();
     TString name_rdhstring = name_string;
     name_rdhstring += "_sr";
 
 
-//    TH1F*  histo_tmp = (TH1F*)file_sr->Get(h->GetName());
+//    TH1D*  histo_tmp = (TH1D*)file_sr->Get(h->GetName());
 //
-//    TH1F histo(name_string, name_string,nbins,xmin, xmax);
+//    TH1D histo(name_string, name_string,nbins,xmin, xmax);
 //    for(int i=1; i<=nbins; i++){
 //      histo.SetBinContent(i,histo_tmp->GetBinContent(i));
 //      histo.SetBinError(i,histo_tmp->GetBinError(i));
@@ -220,7 +222,7 @@ void examplews(){
 	  bbb_string += (isUp==0) ? "Up" : "Down";
 	  bbb_string += "_sr";
 	
-	  TH1F histo(bbb_string, bbb_string, nbins, xmin, xmax);	
+	  TH1D histo(bbb_string, bbb_string, nbins, xmin, xmax);	
 	  
 	  for(int jbin=1; jbin <= nbins; jbin++){
 	    if(jbin==ibin){
@@ -244,7 +246,7 @@ void examplews(){
       }
 
 //
-//    TH1F histo(name_string, name_string,nbins,xmin, xmax);
+//    TH1D histo(name_string, name_string,nbins,xmin, xmax);
 //    for(int i=1; i<=nbins; i++){
 //      histo.SetBinContent(i,histo_tmp->GetBinContent(i));
 //      histo.SetBinError(i,histo_tmp->GetBinError(i));
@@ -262,11 +264,11 @@ void examplews(){
 
   }
 
-  TH1F* data_histo_sr = (TH1F*)file_sr->Get("data_obs");
-  TH1F* bc_jpsi_tau_3p_sr = (TH1F*)file_sr->Get("bc_jpsi_tau_3p");
-  TH1F* bc_jpsi_tau_N3p_sr = (TH1F*)file_sr->Get("bc_jpsi_tau_N3p");
-  TH1F* bc_others_sr = (TH1F*)file_sr->Get("bc_others");
-  TH1F* bc_jpsi_dst_sr = (TH1F*)file_sr->Get("bc_jpsi_dst");
+  TH1D* data_histo_sr = (TH1D*)dir_sr->Get("data_obs");
+  TH1D* bc_jpsi_tau_3p_sr = (TH1D*)dir_sr->Get("bc_jpsi_tau_3p");
+  TH1D* bc_jpsi_tau_N3p_sr = (TH1D*)dir_sr->Get("bc_jpsi_tau_N3p");
+  TH1D* bc_others_sr = (TH1D*)dir_sr->Get("bc_others");
+  TH1D* bc_jpsi_dst_sr = (TH1D*)dir_sr->Get("bc_jpsi_dst");
 
 
 
@@ -314,8 +316,8 @@ void examplews(){
 
   // shape for the fake estimates: 
 
-  TH1F fakes_param_up("fakes_ParamUp_sr","", nbins, xmin, xmax);
-  TH1F fakes_param_down("fakes_ParamDown_sr","", nbins, xmin, xmax);
+  TH1D fakes_param_up("fakes_ParamUp_sr","", nbins, xmin, xmax);
+  TH1D fakes_param_down("fakes_ParamDown_sr","", nbins, xmin, xmax);
 
   double p0 = 0.871;
   double p1 = 0.009;
@@ -342,11 +344,11 @@ void examplews(){
 
   // shape for the fake estimates (bbb): 
 
-  TH1F fakes_bbb_up("fakes_bbbUp_sr","", nbins, xmin, xmax);
-  TH1F fakes_bbb_down("fakes_bbbDown_sr","", nbins, xmin, xmax);
+  TH1D fakes_bbb_up("fakes_bbbUp_sr","", nbins, xmin, xmax);
+  TH1D fakes_bbb_down("fakes_bbbDown_sr","", nbins, xmin, xmax);
 
   TFile *file_ratio = new TFile("syst_bkg/tau_rhomass_unrolled_coarse_ratio.root");
-  TH1F* ratio_hist = (TH1F*) file_ratio->Get("data_obs_sr_xl");
+  TH1D* ratio_hist = (TH1D*) file_ratio->Get("data_obs_sr_xl");
 
   for(int i=1; i<=nbins; i++){
     //    float perc = (fakes_up_ch1_tmp->GetBinContent(i))/fakes_histo_ch2->GetBinContent(i)      ;
