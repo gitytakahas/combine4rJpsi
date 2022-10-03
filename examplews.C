@@ -12,20 +12,31 @@ void examplews(){
 
   // better to create the bins rather than use the "nbins,min,max" to avoid spurious warning about adding bins with different 
   // ranges in combine - see https://root-forum.cern.ch/t/attempt-to-divide-histograms-with-different-bin-limits/17624/3 for why!
-  const int nbins = 25;
-  double xmin=0.;
-  double xmax=25;
-
-  RooRealVar var("tau_rhomass_unrolled_coarse","Tau rhomass unrolled bin ID",nbins,xmin,xmax);
-  RooArgList vars(var);
 
   //////////////////////////////////
   // control region 
   //////////////////////////////////
 
-  TFile *input_file = new TFile("/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/2018/tau_rhomass_unrolled_coarse.root");
+  TFile *input_file = new TFile("/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/2018/tau_rhomass_unrolled_var.root");
   input_file->cd("sb");
   TDirectory* dir_sb = gDirectory;
+  TH1D* data_histo_sb = (TH1D*)dir_sb->Get("data_obs");
+  TH1D* bc_jpsi_tau_3p_sb = (TH1D*)dir_sb->Get("bc_jpsi_tau_3p");
+  TH1D* bc_jpsi_tau_N3p_sb = (TH1D*)dir_sb->Get("bc_jpsi_tau_N3p");
+  TH1D* bc_others_sb = (TH1D*)dir_sb->Get("bc_others");
+  TH1D* bc_jpsi_dst_sb = (TH1D*)dir_sb->Get("bc_jpsi_dst");
+  TH1D* bg_ul_sb = (TH1D*)dir_sb->Get("bg_ul");
+
+  const int nbins = data_histo_sb->GetXaxis()->GetNbins();
+  double xmin=data_histo_sb->GetXaxis()->GetXmin();
+  double xmax=data_histo_sb->GetXaxis()->GetXmax();
+
+  std::cout << "(nbins, xmin, xmax) = " <<  nbins << " " << xmin << " " << xmax << std::endl;
+
+  RooRealVar var("tau_rhomass_unrolled_coarse","Tau rhomass unrolled bin ID",nbins,xmin,xmax);
+  RooArgList vars(var);
+
+
 
   //Loop on all the histos
   TIter next_sb(dir_sb->GetListOfKeys());
@@ -116,11 +127,6 @@ void examplews(){
 
   }
     
-  TH1D* data_histo_sb = (TH1D*)dir_sb->Get("data_obs");
-  TH1D* bc_jpsi_tau_3p_sb = (TH1D*)dir_sb->Get("bc_jpsi_tau_3p");
-  TH1D* bc_jpsi_tau_N3p_sb = (TH1D*)dir_sb->Get("bc_jpsi_tau_N3p");
-  TH1D* bc_others_sb = (TH1D*)dir_sb->Get("bc_others");
-  TH1D* bc_jpsi_dst_sb = (TH1D*)dir_sb->Get("bc_jpsi_dst");
 
   // fakes
   std::vector<RooRealVar> bins; 
@@ -269,7 +275,7 @@ void examplews(){
   TH1D* bc_jpsi_tau_N3p_sr = (TH1D*)dir_sr->Get("bc_jpsi_tau_N3p");
   TH1D* bc_others_sr = (TH1D*)dir_sr->Get("bc_others");
   TH1D* bc_jpsi_dst_sr = (TH1D*)dir_sr->Get("bc_jpsi_dst");
-
+  TH1D* bg_ul_sr = (TH1D*)dir_sr->Get("bg_ul");
 
 
   for(int i=1; i<=nbins; i++){    
@@ -287,8 +293,10 @@ void examplews(){
   //  RooFormulaVar TF("TF","Trasnfer factor","0.092",RooArgList(efficiency) );
 
 
-
-  RooRealVar TF("TF","Transfer factor",0.092); 
+  Float_t ratio = bg_ul_sr->Integral()/bg_ul_sb->Integral();
+  
+  std::cout << "ratio=" << ratio << std::endl;
+  RooRealVar TF("TF","Transfer factor", ratio); 
   //  TF.setConstant(); 
 
   std::vector<RooFormulaVar> bins_sr; 
@@ -314,60 +322,62 @@ void examplews(){
   wspace.import(rph_fakes_sr);
   wspace.import(rph_fakes_sr_norm,RooFit::RecycleConflictNodes());
 
-  // shape for the fake estimates: 
-
-  TH1D fakes_param_up("fakes_ParamUp_sr","", nbins, xmin, xmax);
-  TH1D fakes_param_down("fakes_ParamDown_sr","", nbins, xmin, xmax);
-
-  double p0 = 0.871;
-  double p1 = 0.009;
 
 
-  for(int i=1; i<=nbins; i++){
-    //    float perc = (fakes_up_ch1_tmp->GetBinContent(i))/fakes_histo_ch2->GetBinContent(i)      ;
-    //    std::cout<<"percentage "<<perc<<std::endl;
-    double perc_up = p0 + p1*i;
-    double perc_down = 2 - p0 - p1*i;
-    
-    fakes_param_up.SetBinContent(i, bins_sr[i-1].getVal()*perc_up);
-    fakes_param_down.SetBinContent(i, bins_sr[i-1].getVal()*perc_down);
-
-  }
+/////  // shape for the fake estimates: 
+/////
+/////  TH1D fakes_param_up("fakes_ParamUp_sr","", nbins, xmin, xmax);
+/////  TH1D fakes_param_down("fakes_ParamDown_sr","", nbins, xmin, xmax);
+/////
+/////  double p0 = 0.871;
+/////  double p1 = 0.009;
+/////
+/////
+/////  for(int i=1; i<=nbins; i++){
+/////    //    float perc = (fakes_up_ch1_tmp->GetBinContent(i))/fakes_histo_ch2->GetBinContent(i)      ;
+/////    //    std::cout<<"percentage "<<perc<<std::endl;
+/////    double perc_up = p0 + p1*i;
+/////    double perc_down = 2 - p0 - p1*i;
+/////    
+/////    fakes_param_up.SetBinContent(i, bins_sr[i-1].getVal()*perc_up);
+/////    fakes_param_down.SetBinContent(i, bins_sr[i-1].getVal()*perc_down);
+/////
+/////  }
+/////  
+/////  RooDataHist rdh_fakes_param_up("fakes_ParamUp_sr","Bkg sys up",vars,&fakes_param_up);
+/////  wspace.import(rdh_fakes_param_up);
+/////
+/////  RooDataHist rdh_fakes_param_down("fakes_ParamDown_sr","Bkg sys down",vars,&fakes_param_down);
+/////  wspace.import(rdh_fakes_param_down);
+/////
+/////
+/////
+/////  // shape for the fake estimates (bbb): 
+/////
+/////  TH1D fakes_bbb_up("fakes_bbbUp_sr","", nbins, xmin, xmax);
+/////  TH1D fakes_bbb_down("fakes_bbbDown_sr","", nbins, xmin, xmax);
+/////
+/////  TFile *file_ratio = new TFile("syst_bkg/tau_rhomass_unrolled_coarse_ratio.root");
+/////  TH1D* ratio_hist = (TH1D*) file_ratio->Get("data_obs_sr_xl");
+/////
+/////  for(int i=1; i<=nbins; i++){
+/////    //    float perc = (fakes_up_ch1_tmp->GetBinContent(i))/fakes_histo_ch2->GetBinContent(i)      ;
+/////    //    std::cout<<"percentage "<<perc<<std::endl;
+/////    double perc_up = ratio_hist->GetBinContent(i);
+/////    double perc_down = 2 - ratio_hist->GetBinContent(i);
+/////    
+/////    fakes_bbb_up.SetBinContent(i, bins_sr[i-1].getVal()*perc_up);
+/////    fakes_bbb_down.SetBinContent(i, bins_sr[i-1].getVal()*perc_down);
+/////
+/////  }
+/////  
+/////  RooDataHist rdh_fakes_bbb_up("fakes_bbbUp_sr","Bkg sys up",vars,&fakes_bbb_up);
+/////  wspace.import(rdh_fakes_bbb_up);
+/////
+/////  RooDataHist rdh_fakes_bbb_down("fakes_bbbDown_sr","Bkg sys down",vars,&fakes_bbb_down);
+/////  wspace.import(rdh_fakes_bbb_down);
   
-  RooDataHist rdh_fakes_param_up("fakes_ParamUp_sr","Bkg sys up",vars,&fakes_param_up);
-  wspace.import(rdh_fakes_param_up);
-
-  RooDataHist rdh_fakes_param_down("fakes_ParamDown_sr","Bkg sys down",vars,&fakes_param_down);
-  wspace.import(rdh_fakes_param_down);
-
-
-
-  // shape for the fake estimates (bbb): 
-
-  TH1D fakes_bbb_up("fakes_bbbUp_sr","", nbins, xmin, xmax);
-  TH1D fakes_bbb_down("fakes_bbbDown_sr","", nbins, xmin, xmax);
-
-  TFile *file_ratio = new TFile("syst_bkg/tau_rhomass_unrolled_coarse_ratio.root");
-  TH1D* ratio_hist = (TH1D*) file_ratio->Get("data_obs_sr_xl");
-
-  for(int i=1; i<=nbins; i++){
-    //    float perc = (fakes_up_ch1_tmp->GetBinContent(i))/fakes_histo_ch2->GetBinContent(i)      ;
-    //    std::cout<<"percentage "<<perc<<std::endl;
-    double perc_up = ratio_hist->GetBinContent(i);
-    double perc_down = 2 - ratio_hist->GetBinContent(i);
-    
-    fakes_bbb_up.SetBinContent(i, bins_sr[i-1].getVal()*perc_up);
-    fakes_bbb_down.SetBinContent(i, bins_sr[i-1].getVal()*perc_down);
-
-  }
-  
-  RooDataHist rdh_fakes_bbb_up("fakes_bbbUp_sr","Bkg sys up",vars,&fakes_bbb_up);
-  wspace.import(rdh_fakes_bbb_up);
-
-  RooDataHist rdh_fakes_bbb_down("fakes_bbbDown_sr","Bkg sys down",vars,&fakes_bbb_down);
-  wspace.import(rdh_fakes_bbb_down);
-  
-  file_ratio->Close();
+/////  file_ratio->Close();
 
 
 

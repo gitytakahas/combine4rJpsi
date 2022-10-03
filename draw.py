@@ -1,6 +1,6 @@
 import os, copy
 from ROOT import gStyle, TCanvas, TLegend, TH1F, gROOT, TFile
-from common.officialStyle import officialStyle
+from officialStyle import officialStyle
 #from common.DisplayManager_postfit import DisplayManager
 #from common.DataMCPlot import *
 
@@ -16,25 +16,25 @@ def ensureDir(directory):
 
 
 #shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/tau_rhomass_unrolled_coarse_new.root'
-<<<<<<< HEAD
-shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard_fromYuta20220317_sr4p3_sb2p5-3p5_lp2-2p5_fixed_Federica/sr/tau_rhomass_unrolled_new.root'
-file_shape = TFile(shape_file)
-data_sb = file_shape.Get('sb/data_obs')
-nbin = data_sb.GetXaxis().GetNbins()
-=======
-#shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/tau_rhomass_unrolled_new.root'
+#<<<<<<< HEAD
+#shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard_fromYuta20220317_sr4p3_sb2p5-3p5_lp2-2p5_fixed_Federica/sr/tau_rhomass_unrolled_new.root'
 #file_shape = TFile(shape_file)
 #data_sb = file_shape.Get('sb/data_obs')
 #nbin = data_sb.GetXaxis().GetNbins()
->>>>>>> origin/main
+#=======
+##shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/tau_rhomass_unrolled_new.root'
+##file_shape = TFile(shape_file)
+##data_sb = file_shape.Get('sb/data_obs')
+##nbin = data_sb.GetXaxis().GetNbins()
+#>>>>>>> origin/main
 
 
 
-filename = 'output/sm_cards/LIMITS/fitDiagnostics.root'
+filename = 'output/sm_cards/LIMITS/fitDiagnosticsTest.root'
 
 file = TFile(filename)
 
-print file
+print(file)
 
 process = {
     'data':{'name':'data'},
@@ -50,7 +50,7 @@ ensureDir('Plots/')
 
 #nbin = 20
 
-for ftype in ['fit_s', 'prefit']:
+for ftype in ['fit_s', 'fit_b', 'prefit']:
 #for ftype in ['prefit', 'fit_b']:
 
 
