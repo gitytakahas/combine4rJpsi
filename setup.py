@@ -59,14 +59,14 @@ cb.cp().AddSyst(
     cb, 'tauReco', 'shape', ch.SystMap('channel', 'process')
     (channels, sig_procs + bkg_procs, 1.0))
 
-cb.cp().AddSyst(
-    cb, 'xgbsEff', 'shape', ch.SystMap('channel', 'process')
-    (channels, sig_procs + bkg_procs, 1.0))
+#cb.cp().AddSyst(
+#    cb, 'xgbsEff', 'shape', ch.SystMap('channel', 'process')
+#    (channels, sig_procs + bkg_procs, 1.0))
 
 # This is from Stefano's number: https://sleontsi.web.cern.ch/sleontsi/Bc+/Yuta/
 
 cb.cp().process(['dd_bkg']).AddSyst(
-    cb, 'CMS_bkg', 'lnN', ch.SystMap()(1.3))
+    cb, 'CMS_bkg_$ERA', 'lnN', ch.SystMap()(1.3))
 
 
 

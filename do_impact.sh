@@ -2,7 +2,7 @@ workspace="workspace.root"
 #toy="-t -1 --expectSignal 0.71"
 toy=""
 
-python setup.py
+#python setup.py
 
 cd output/sm_cards/LIMITS/
 

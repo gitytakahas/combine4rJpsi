@@ -1,9 +1,9 @@
 workspace="workspace.root"
 signal_for_gof="--fixedSignalStrength=0.71"
 #signal_for_gof="--fixedSignalStrength=0."
-ntoys="100"
+ntoys="250"
 
-#python setup.py
+python setup.py
 
 #method="KS"
 #method="saturated"
