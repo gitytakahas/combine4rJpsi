@@ -9,7 +9,8 @@ gROOT.SetBatch(True)
 #gROOT.SetBatch(False)
 officialStyle(gStyle)
 gStyle.SetOptTitle(0)
-gStyle.SetOptFit(111)
+gStyle.SetOptStat(1111)
+gStyle.SetOptFit(1111)
 
 
 
