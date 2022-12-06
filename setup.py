@@ -8,10 +8,10 @@ import sys
 
 args = sys.argv
 
-shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine/2018/tau_rhomass_unrolled_coarse.root'
-#shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine/2018/tau_rhomass_unrolled.root'
-#shape_file = '/work/${USER}/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard/sr/tau_rhomass_unrolled_new.root'
-#shape_file = '/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/dev/datacard_MUSF_blind/sr/tau_rhomass_unrolled_new.root'
+shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4/2018/tau_rhomass_unrolled_coarse.root'
+#shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4p3/2018/tau_rhomass_unrolled_coarse.root'
+#shape_file = '/work/cgalloni/Rjpsi_analysis/CMSSW_10_2_10/src/rJpsi/anal/datacard_fromYuta20220317_sr4p3_sb2p5-3p5_lp2-2p5_fixed_Federica_0p078_weightLuigi_systBkg/sr/tau_rhomass_unrolled_coarse_new.root'
+
 
 file = ROOT.TFile(shape_file)
 
@@ -51,22 +51,24 @@ for chn in channels:
 print '>> Adding systematic uncertainties...'
 
 
-#cb.cp().bin_id([1]).process(procs['sig'] + ['ZJ', 'ZL', 'TTJ', 'VV', 'STT', 'STJ', 'TTT', 'ZTT']).AddSyst(
 
-cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).AddSyst(
-    cb, 'CMS_lumi', 'lnN', ch.SystMap()(1.025))
 
-cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).AddSyst(
-    cb, 'CMS_taureco', 'lnN', ch.SystMap()(1.05))
+#cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).AddSyst(
+#    cb, 'CMS_lumi', 'lnN', ch.SystMap()(1.025))
 
-cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc_jpsi_dst']).AddSyst(
-    cb, 'CMS_xgbseff', 'lnN', ch.SystMap()(1.05))
+cb.cp().AddSyst(
+    cb, 'tauReco', 'shape', ch.SystMap('channel', 'process')
+    (channels, sig_procs + bkg_procs, 1.0))
 
+cb.cp().AddSyst(
+    cb, 'xgbsEff', 'shape', ch.SystMap('channel', 'process')
+    (channels, sig_procs + bkg_procs, 1.0))
 
 # This is from Stefano's number: https://sleontsi.web.cern.ch/sleontsi/Bc+/Yuta/
 
 cb.cp().process(['dd_bkg']).AddSyst(
-    cb, 'CMS_bkg', 'lnN', ch.SystMap()((0.952, 1.149)))
+
+    cb, 'CMS_bkg', 'lnN', ch.SystMap()((0.98, 1.04)))
 
 cb.cp().AddSyst(
     cb, 'br_BcJpsiDst', 'shape', ch.SystMap('channel', 'process')
@@ -85,6 +87,10 @@ cb.cp().AddSyst(
     cb, 'shape', 'shape', ch.SystMap('channel', 'process')
     (channels, ['dd_bkg'], 1.0))
 
+cb.cp().AddSyst(
+    cb, 'bkgExtra', 'shape', ch.SystMap('channel', 'process')
+    (channels, ['dd_bkg'], 1.0))
+
 cb.cp().AddSyst( 
     cb, 'muSFID', 'shape', ch.SystMap('channel', 'process')
     (channels, sig_procs + bkg_procs, 1.0))
@@ -101,6 +107,9 @@ cb.cp().AddSyst(
     cb, 'tauBr', 'shape', ch.SystMap('channel', 'process')
     (channels, sig_procs, 1.0))
 
+cb.cp().AddSyst(
+    cb, 'BcPt', 'shape', ch.SystMap('channel', 'process')
+    (channels, sig_procs + bkg_procs, 1.0))
 
 print '>> Extracting histograms from input root files...'
 #file = aux_shapes + 'datacard_combine_1p.root'
@@ -128,8 +137,7 @@ bbb.AddBinByBin(cb.cp().process(sig_procs + ['bc_others', 'bc_jpsi_tau_N3p', 'bc
 
 cb.SetGroup('syst', ['.*'])
 cb.SetGroup('bbb', ['CMS_rJpsi_.*_bin_.*'])
-cb.SetGroup('lumi', ['CMS_lumi'])
-cb.RemoveGroup('syst', ['CMS_lumi', 'CMS_rJpsi_.*_bin_.*'])
+cb.RemoveGroup('syst', [ 'CMS_rJpsi_.*_bin_.*'])
 
 
 
