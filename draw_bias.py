@@ -9,8 +9,8 @@ gROOT.SetBatch(True)
 #gROOT.SetBatch(False)
 officialStyle(gStyle)
 gStyle.SetOptTitle(0)
-gStyle.SetOptStat(1111)
-gStyle.SetOptFit(1111)
+gStyle.SetOptStat(111)
+gStyle.SetOptFit(111)
 
 
 
@@ -34,7 +34,8 @@ filename = 'output/sm_cards/LIMITS/fitDiagnosticsTest.root'
 file = TFile(filename)
 tree = file.Get('tree_fit_sb')
 
-bias = TH1F('bias', 'bias', 100,-5,5)
+#bias = TH1F('bias', 'bias', 120,-6,6)
+bias = TH1F('bias', 'bias', 50,-6,6)
 bias.GetXaxis().SetTitle('Pull')
 bias.GetYaxis().SetTitle('a.u.')
 

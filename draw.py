@@ -30,7 +30,7 @@ def ensureDir(directory):
 
 
 
-filename = 'output/sm_cards/LIMITS/fitDiagnosticsTest.root'
+filename = 'fitDiagnosticsTest.root'
 
 file = TFile(filename)
 
@@ -50,78 +50,68 @@ ensureDir('Plots/')
 
 #nbin = 20
 
+
 for ftype in ['fit_s', 'fit_b', 'prefit']:
-#for ftype in ['prefit', 'fit_b']:
 
+#    for cr in ['tauhad_2016', 'tauhad_2017', 'tauhad_2018']:
+    for year in ['2018']:
 
-    for cr in ['rJpsi_sr_1_2018']:
-#    for cr in ['sr', 'sb']:
-#    for cr in ['rJpsi_sr_1_2018']:
+        for cat in ['sr', 'sb']:
 
-        hists = {}
+            hists = {}
+        
+            ymax = -1
+            
+        
+            for ii, var in process.iteritems():
     
-        ymax = -1
+                hist = file.Get('shapes_' + ftype + '/tauhad_' + cat + '_' + year + '/' + var['name'])
+                
+                hist.SetFillStyle(0)
+                
+                nbin = hist.GetXaxis().GetNbins()
 
+                
+                if ii.find('signal')!=-1:
+                    hist.SetLineColor(2)
+                    hist.SetLineStyle(2)
+                elif ii.find('data')!=-1:
+                    hist.SetMarkerStyle(20)
+                    hist.SetMarkerSize(1)
+
+                hist.SetLineWidth(3)
         
-        for ii, var in process.iteritems():
-    
-            hist = file.Get('shapes_' + ftype + '/' + cr + '/' + var['name'])
-            
-#            print hist, 'shapes_' + ftype + '/' + cr + '/' + var['name']
-
-            hist.SetFillStyle(0)
-#            print file
-            
-            nbin = hist.GetXaxis().GetNbins()
-#            print nbin
-            
-#            if var['name'].find('bin')!=-1:
-#                hist.SetLineColor(2)
-#                hist.SetLineStyle(2)
-
-            if ii.find('signal')!=-1:
-                hist.SetLineColor(2)
-                hist.SetLineStyle(2)
-            elif ii.find('data')!=-1:
-                hist.SetMarkerStyle(20)
-                hist.SetMarkerSize(1)
-
-            hist.SetLineWidth(3)
-        
-            hists[ii] = copy.deepcopy(hist)
-
-            if ymax < hist.GetMaximum(): ymax = hist.GetMaximum()
+                hists[ii] = copy.deepcopy(hist)
+                
+                if ymax < hist.GetMaximum(): ymax = hist.GetMaximum()
 
             
-        canvas = TCanvas('canvas_' + ftype + '_' + cr)
-#        canvas.SetLogy()
+            cname = ftype + '_' + cat + '_' + year
+            canvas = TCanvas('canvas_' + cname)
 
-        frame = TH1F('frame_' + ftype + '_' + cr, 'fname_' + ftype + '_' + cr, nbin, 0, nbin)
-        frame.GetXaxis().SetTitle('Tau rhomasses unrolled bin ID')
-        frame.GetYaxis().SetTitle('Events')
-  
-#        if ftype.find('prefit')!=-1:
-        frame.SetMaximum(ymax*2.)
-        frame.SetMinimum(0.)
-#        else:
-#            frame.SetMaximum(ymax*8)
-#            frame.SetMinimum(0.8)
-
-        frame.Draw()
-
-        hs = copy.deepcopy(hists['total_background'])
-        hs.Add(copy.deepcopy(hists['total_signal']))
-        hs.SetFillStyle(1)
-        hs.SetFillColor(2)
-        hs.SetLineColor(2)
-        hs.Draw('hsame')
-
-        hists['total_background'].SetFillStyle(1)
-        hists['total_background'].SetFillColor(10)
-        hists['total_background'].Draw('hsame')
-        
-        hists['total_signal'].Draw('hsame')
-        hists['data'].Draw('epzsame')
-
-        canvas.RedrawAxis()                
-        canvas.SaveAs('Plots/' + ftype + '_' + cr + '.gif')
+            frame = TH1F('frame_' + cname, 'fname_' + cname, nbin, 0, nbin)
+            frame.GetXaxis().SetTitle('Tau rhomasses unrolled bin ID')
+            frame.GetYaxis().SetTitle('Events')
+            
+            frame.SetMaximum(ymax*2.)
+            frame.SetMinimum(0.)
+            
+            frame.Draw()
+            
+            hs = copy.deepcopy(hists['total_background'])
+            hs.Add(copy.deepcopy(hists['total_signal']))
+            hs.SetFillStyle(1)
+            hs.SetFillColor(2)
+            hs.SetLineColor(2)
+            hs.Draw('hsame')
+            
+            hists['total_background'].SetFillStyle(1)
+            hists['total_background'].SetFillColor(10)
+            hists['total_background'].Draw('hsame')
+            
+            hists['total_signal'].Draw('hsame')
+            hists['data'].Draw('epzsame')
+            
+            canvas.RedrawAxis()                
+            canvas.SaveAs('Plots/' + cname + '.gif')
+            
