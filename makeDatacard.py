@@ -50,7 +50,12 @@ for year in eras:
     sysdict['bcnorm_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.05}
     sysdict['trigger_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
     sysdict['sfIdJpsi_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
-    sysdict['sfReco_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
+
+    if year=='2018':
+        sysdict['sfReco'] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
+    else:
+        sysdict['sfReco_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
+
 
 sysdict['bccorr'] = {'type':'shape', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.0}
 sysdict['bglvar_e0'] = {'type':'shape', 'proc':['jpsi_tau'], 'size':1.0}

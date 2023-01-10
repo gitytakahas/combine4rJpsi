@@ -18,7 +18,7 @@ fakeNorm_2018 	lnN	-	-	-	1.3	-	-	-	-
 bcnorm_2018 	lnN	1.05	1.05	1.05	-	1.05	1.05	1.05	-	
 trigger_2018 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
 sfIdJpsi_2018 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
-sfReco_2018 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
+sfReco 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
 bccorr 	shape	1.0	1.0	1.0	-	1.0	1.0	1.0	-	
 bglvar_e0 	shape	1.0	-	-	-	1.0	-	-	-	
 bglvar_e1 	shape	1.0	-	-	-	1.0	-	-	-	
@@ -154,4 +154,4 @@ bg_bin13_tauhad_sb_2018 	 flatParam
 bg_bin14_tauhad_sb_2018 	 flatParam
 bg_bin15_tauhad_sb_2018 	 flatParam
 bg_bin16_tauhad_sb_2018 	 flatParam
-syst group = fakeNorm_2018 bcnorm_2018 trigger_2018 sfIdJpsi_2018 sfReco_2018 bccorr bglvar_e0 bglvar_e1 bglvar_e2 bglvar_e3 bglvar_e4 bglvar_e5 bglvar_e6 bglvar_e7 bglvar_e8 bglvar_e9 br_jpsi_hc_over_mu br_others ctau puWeight tauBr tauReco 
+syst group = fakeNorm_2018 bcnorm_2018 trigger_2018 sfIdJpsi_2018 sfReco bccorr bglvar_e0 bglvar_e1 bglvar_e2 bglvar_e3 bglvar_e4 bglvar_e5 bglvar_e6 bglvar_e7 bglvar_e8 bglvar_e9 br_jpsi_hc_over_mu br_others ctau puWeight tauBr tauReco 

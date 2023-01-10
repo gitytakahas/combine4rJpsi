@@ -1,6 +1,6 @@
 toy="-t -1 --expectSignal 0.71"
 range="--rMin -3 --rMax 3"
-card="combine.txt"
+card="combine_all.txt"
 
 cd datacard
 

@@ -15,7 +15,7 @@ do
     combine -M ${method} ${workspace} --robustFit=1 ${toy} --algo grid -n .nominal ${range}
     combine -M ${method} ${workspace} --robustFit=1 ${toy} --algo grid -n .freeze.syst --freezeNuisanceGroups syst ${range} --fastScan 
 
-    plot1DScan.py higgsCombine.nominal.${method}.mH120.root --POI "r" -o nominal.es --logo 'CMS' --logo-sub 'Internal' --others  "higgsCombine.freeze.syst.${method}.mH120.root:Freeze Syst:2" --breakdown "Syst,Stat" --output parabola_${year}
+    plot1DScan.py higgsCombine.nominal.${method}.mH120.root --POI "r" -o nominal.es --logo 'CMS' --logo-sub 'Internal' --others  "higgsCombine.freeze.syst.${method}.mH120.root:Freeze Syst:2" --breakdown "Syst,Stat" --output parabola_comb_${year}
 
 
 done

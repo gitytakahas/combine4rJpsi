@@ -2,8 +2,11 @@ __init__.py
 *.pyc
 *.pdf
 *.png
+*.d
+*.so
 *.log
 *.root
+*.pcm
 .*.swp
 .#*
 #*#
