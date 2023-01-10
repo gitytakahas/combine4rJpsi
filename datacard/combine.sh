@@ -1,7 +1,7 @@
 toy="-t -1 --expectSignal 0.71"
 
 for year in 2016 2017 2018 all 
-#for year in 2018
+#for year in all
 do
     
     target="combine_${year}.txt"

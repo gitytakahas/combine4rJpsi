@@ -1,6 +1,6 @@
 imax 2
 jmax 3
-kmax 21
+kmax 118
 --------------------------------------------------------------------------------
 shapes 	 * 	 tauhad_sr_2018 	 param_tauhad_ws.root wspace:$PROCESS_tauhad_sr_2018 wspace:$PROCESS_$SYSTEMATIC_tauhad_sr_2018
 shapes 	 * 	 tauhad_sb_2018 	 param_tauhad_ws.root wspace:$PROCESS_tauhad_sb_2018 wspace:$PROCESS_$SYSTEMATIC_tauhad_sb_2018
@@ -15,6 +15,10 @@ process 	0	1	2	3	0	1	2	3
 rate 	448.66	119.41	580.02	1	567.15	433.97	959.57	1	
 --------------------------------------------------------------------------------
 fakeNorm_2018 	lnN	-	-	-	1.3	-	-	-	-	
+bcnorm_2018 	lnN	1.05	1.05	1.05	-	1.05	1.05	1.05	-	
+trigger_2018 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
+sfIdJpsi_2018 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
+sfReco_2018 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
 bccorr 	shape	1.0	1.0	1.0	-	1.0	1.0	1.0	-	
 bglvar_e0 	shape	1.0	-	-	-	1.0	-	-	-	
 bglvar_e1 	shape	1.0	-	-	-	1.0	-	-	-	
@@ -30,11 +34,104 @@ br_jpsi_hc_over_mu 	lnN	-	-	1.38	-	-	-	1.38	-
 br_others 	lnN	-	1.38	-	-	-	1.38	-	-	
 ctau 	shape	1.0	1.0	1.0	-	1.0	1.0	1.0	-	
 puWeight 	shape	1.0	1.0	1.0	-	1.0	1.0	1.0	-	
-sfIdJpsi 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
-sfReco 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
 tauBr 	shape	1.0	-	-	-	1.0	-	-	-	
 tauReco 	lnN	1.05	1.05	1.05	-	1.05	1.05	1.05	-	
-trigger 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
+jpsi_tau_bbb1tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb2tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb3tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb4tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb5tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb6tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb7tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb8tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb9tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb10tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb11tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb12tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb13tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb14tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb15tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+jpsi_tau_bbb16tauhad_sr_2018	 shape	 1.0	 -	 -	 -	 -	 -	 -	 -
+bc_others_bbb1tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb2tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb3tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb4tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb5tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb6tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb7tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb8tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb9tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb10tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb11tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb12tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb13tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb14tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb15tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+bc_others_bbb16tauhad_sr_2018	 shape	 -	 1.0	 -	 -	 -	 -	 -	 -
+jpsi_hc_bbb1tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb2tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb3tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb4tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb5tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb6tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb7tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb8tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb9tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb10tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb11tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb12tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb13tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb14tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb15tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_hc_bbb16tauhad_sr_2018	 shape	 -	 -	 1.0	 -	 -	 -	 -	 -
+jpsi_tau_bbb1tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb2tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb3tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb4tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb5tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb6tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb7tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb8tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb9tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb10tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb11tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb12tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb13tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb14tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb15tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+jpsi_tau_bbb16tauhad_sb_2018	 shape	 -	 -	 -	 -	 1.0	 -	 -	 -
+bc_others_bbb1tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb2tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb3tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb4tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb5tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb6tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb7tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb8tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb9tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb10tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb11tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb12tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb13tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb14tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb15tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+bc_others_bbb16tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 1.0	 -	 -
+jpsi_hc_bbb1tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb2tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb3tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb4tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb5tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb6tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb7tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb8tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb9tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb10tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb11tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb12tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb13tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb14tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb15tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
+jpsi_hc_bbb16tauhad_sb_2018	 shape	 -	 -	 -	 -	 -	 -	 1.0	 -
 bc 	 rateParam 	 tauhad_sr_2018	jpsi_tau	 1 
 bc 	 rateParam 	 tauhad_sr_2018	bc_others	 1 
 bc 	 rateParam 	 tauhad_sr_2018	jpsi_hc	 1 
@@ -57,132 +154,4 @@ bg_bin13_tauhad_sb_2018 	 flatParam
 bg_bin14_tauhad_sb_2018 	 flatParam
 bg_bin15_tauhad_sb_2018 	 flatParam
 bg_bin16_tauhad_sb_2018 	 flatParam
-bg_bin17_tauhad_sb_2018 	 flatParam
-bg_bin18_tauhad_sb_2018 	 flatParam
-bg_bin19_tauhad_sb_2018 	 flatParam
-bg_bin20_tauhad_sb_2018 	 flatParam
-bg_bin21_tauhad_sb_2018 	 flatParam
-bg_bin22_tauhad_sb_2018 	 flatParam
-bg_bin23_tauhad_sb_2018 	 flatParam
-bg_bin24_tauhad_sb_2018 	 flatParam
-bg_bin25_tauhad_sb_2018 	 flatParam
-bg_bin26_tauhad_sb_2018 	 flatParam
-bg_bin27_tauhad_sb_2018 	 flatParam
-bg_bin28_tauhad_sb_2018 	 flatParam
-bg_bin29_tauhad_sb_2018 	 flatParam
-bg_bin30_tauhad_sb_2018 	 flatParam
-bg_bin31_tauhad_sb_2018 	 flatParam
-bg_bin32_tauhad_sb_2018 	 flatParam
-bg_bin33_tauhad_sb_2018 	 flatParam
-bg_bin34_tauhad_sb_2018 	 flatParam
-bg_bin35_tauhad_sb_2018 	 flatParam
-bg_bin36_tauhad_sb_2018 	 flatParam
-bg_bin37_tauhad_sb_2018 	 flatParam
-bg_bin38_tauhad_sb_2018 	 flatParam
-bg_bin39_tauhad_sb_2018 	 flatParam
-bg_bin40_tauhad_sb_2018 	 flatParam
-bg_bin41_tauhad_sb_2018 	 flatParam
-bg_bin42_tauhad_sb_2018 	 flatParam
-bg_bin43_tauhad_sb_2018 	 flatParam
-bg_bin44_tauhad_sb_2018 	 flatParam
-bg_bin45_tauhad_sb_2018 	 flatParam
-bg_bin46_tauhad_sb_2018 	 flatParam
-bg_bin47_tauhad_sb_2018 	 flatParam
-bg_bin48_tauhad_sb_2018 	 flatParam
-bg_bin49_tauhad_sb_2018 	 flatParam
-bg_bin50_tauhad_sb_2018 	 flatParam
-bg_bin51_tauhad_sb_2018 	 flatParam
-bg_bin52_tauhad_sb_2018 	 flatParam
-bg_bin53_tauhad_sb_2018 	 flatParam
-bg_bin54_tauhad_sb_2018 	 flatParam
-bg_bin55_tauhad_sb_2018 	 flatParam
-bg_bin56_tauhad_sb_2018 	 flatParam
-bg_bin57_tauhad_sb_2018 	 flatParam
-bg_bin58_tauhad_sb_2018 	 flatParam
-bg_bin59_tauhad_sb_2018 	 flatParam
-bg_bin60_tauhad_sb_2018 	 flatParam
-bg_bin61_tauhad_sb_2018 	 flatParam
-bg_bin62_tauhad_sb_2018 	 flatParam
-bg_bin63_tauhad_sb_2018 	 flatParam
-bg_bin64_tauhad_sb_2018 	 flatParam
-bg_bin65_tauhad_sb_2018 	 flatParam
-bg_bin66_tauhad_sb_2018 	 flatParam
-bg_bin67_tauhad_sb_2018 	 flatParam
-bg_bin68_tauhad_sb_2018 	 flatParam
-bg_bin69_tauhad_sb_2018 	 flatParam
-bg_bin70_tauhad_sb_2018 	 flatParam
-bg_bin71_tauhad_sb_2018 	 flatParam
-bg_bin72_tauhad_sb_2018 	 flatParam
-bg_bin73_tauhad_sb_2018 	 flatParam
-bg_bin74_tauhad_sb_2018 	 flatParam
-bg_bin75_tauhad_sb_2018 	 flatParam
-bg_bin76_tauhad_sb_2018 	 flatParam
-bg_bin77_tauhad_sb_2018 	 flatParam
-bg_bin78_tauhad_sb_2018 	 flatParam
-bg_bin79_tauhad_sb_2018 	 flatParam
-bg_bin80_tauhad_sb_2018 	 flatParam
-bg_bin81_tauhad_sb_2018 	 flatParam
-bg_bin82_tauhad_sb_2018 	 flatParam
-bg_bin83_tauhad_sb_2018 	 flatParam
-bg_bin84_tauhad_sb_2018 	 flatParam
-bg_bin85_tauhad_sb_2018 	 flatParam
-bg_bin86_tauhad_sb_2018 	 flatParam
-bg_bin87_tauhad_sb_2018 	 flatParam
-bg_bin88_tauhad_sb_2018 	 flatParam
-bg_bin89_tauhad_sb_2018 	 flatParam
-bg_bin90_tauhad_sb_2018 	 flatParam
-bg_bin91_tauhad_sb_2018 	 flatParam
-bg_bin92_tauhad_sb_2018 	 flatParam
-bg_bin93_tauhad_sb_2018 	 flatParam
-bg_bin94_tauhad_sb_2018 	 flatParam
-bg_bin95_tauhad_sb_2018 	 flatParam
-bg_bin96_tauhad_sb_2018 	 flatParam
-bg_bin97_tauhad_sb_2018 	 flatParam
-bg_bin98_tauhad_sb_2018 	 flatParam
-bg_bin99_tauhad_sb_2018 	 flatParam
-bg_bin100_tauhad_sb_2018 	 flatParam
-bg_bin101_tauhad_sb_2018 	 flatParam
-bg_bin102_tauhad_sb_2018 	 flatParam
-bg_bin103_tauhad_sb_2018 	 flatParam
-bg_bin104_tauhad_sb_2018 	 flatParam
-bg_bin105_tauhad_sb_2018 	 flatParam
-bg_bin106_tauhad_sb_2018 	 flatParam
-bg_bin107_tauhad_sb_2018 	 flatParam
-bg_bin108_tauhad_sb_2018 	 flatParam
-bg_bin109_tauhad_sb_2018 	 flatParam
-bg_bin110_tauhad_sb_2018 	 flatParam
-bg_bin111_tauhad_sb_2018 	 flatParam
-bg_bin112_tauhad_sb_2018 	 flatParam
-bg_bin113_tauhad_sb_2018 	 flatParam
-bg_bin114_tauhad_sb_2018 	 flatParam
-bg_bin115_tauhad_sb_2018 	 flatParam
-bg_bin116_tauhad_sb_2018 	 flatParam
-bg_bin117_tauhad_sb_2018 	 flatParam
-bg_bin118_tauhad_sb_2018 	 flatParam
-bg_bin119_tauhad_sb_2018 	 flatParam
-bg_bin120_tauhad_sb_2018 	 flatParam
-bg_bin121_tauhad_sb_2018 	 flatParam
-bg_bin122_tauhad_sb_2018 	 flatParam
-bg_bin123_tauhad_sb_2018 	 flatParam
-bg_bin124_tauhad_sb_2018 	 flatParam
-bg_bin125_tauhad_sb_2018 	 flatParam
-bg_bin126_tauhad_sb_2018 	 flatParam
-bg_bin127_tauhad_sb_2018 	 flatParam
-bg_bin128_tauhad_sb_2018 	 flatParam
-bg_bin129_tauhad_sb_2018 	 flatParam
-bg_bin130_tauhad_sb_2018 	 flatParam
-bg_bin131_tauhad_sb_2018 	 flatParam
-bg_bin132_tauhad_sb_2018 	 flatParam
-bg_bin133_tauhad_sb_2018 	 flatParam
-bg_bin134_tauhad_sb_2018 	 flatParam
-bg_bin135_tauhad_sb_2018 	 flatParam
-bg_bin136_tauhad_sb_2018 	 flatParam
-bg_bin137_tauhad_sb_2018 	 flatParam
-bg_bin138_tauhad_sb_2018 	 flatParam
-bg_bin139_tauhad_sb_2018 	 flatParam
-bg_bin140_tauhad_sb_2018 	 flatParam
-bg_bin141_tauhad_sb_2018 	 flatParam
-bg_bin142_tauhad_sb_2018 	 flatParam
-bg_bin143_tauhad_sb_2018 	 flatParam
-bg_bin144_tauhad_sb_2018 	 flatParam
-syst group = fakeNorm_2018 bccorr bglvar_e0 bglvar_e1 bglvar_e2 bglvar_e3 bglvar_e4 bglvar_e5 bglvar_e6 bglvar_e7 bglvar_e8 bglvar_e9 br_jpsi_hc_over_mu br_others ctau puWeight sfIdJpsi sfReco tauBr tauReco trigger 
+syst group = fakeNorm_2018 bcnorm_2018 trigger_2018 sfIdJpsi_2018 sfReco_2018 bccorr bglvar_e0 bglvar_e1 bglvar_e2 bglvar_e3 bglvar_e4 bglvar_e5 bglvar_e6 bglvar_e7 bglvar_e8 bglvar_e9 br_jpsi_hc_over_mu br_others ctau puWeight tauBr tauReco 

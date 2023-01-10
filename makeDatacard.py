@@ -3,6 +3,7 @@ from optparse import OptionParser, OptionValueError
 
 usage = "usage: python compare.py" 
 parser = OptionParser(usage) 
+parser.add_option('-b', '--bbb', action="store_true", default=True, dest='bbb')
 parser.add_option("-y", "--year", default="all", type="string", dest="year")
 (options, args) = parser.parse_args() 
 
@@ -12,7 +13,6 @@ if options.year!='all':
 
 
 
-doBBB = False
 
 input_file = TFile("/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/tau_rhomass_unrolled_var.root")
 
@@ -47,8 +47,11 @@ sysdict = OrderedDict()
 
 for year in eras:
     sysdict['fakeNorm_' + year] = {'type':'lnN', 'proc':['fakes'], 'size':1.3}
+    sysdict['bcnorm_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.05}
+    sysdict['trigger_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
+    sysdict['sfIdJpsi_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
+    sysdict['sfReco_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
 
-#sysdict['fakeNorm'] = {'type':'lnN', 'proc':['fakes'], 'size':1.3}
 sysdict['bccorr'] = {'type':'shape', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.0}
 sysdict['bglvar_e0'] = {'type':'shape', 'proc':['jpsi_tau'], 'size':1.0}
 sysdict['bglvar_e1'] = {'type':'shape', 'proc':['jpsi_tau'], 'size':1.0}
@@ -64,11 +67,9 @@ sysdict['br_jpsi_hc_over_mu'] = {'type':'lnN', 'proc':['jpsi_hc'], 'size':1.38}
 sysdict['br_others'] = {'type':'lnN', 'proc':['bc_others'], 'size':1.38}
 sysdict['ctau'] = {'type':'shape', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.0}
 sysdict['puWeight'] = {'type':'shape', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.0}
-sysdict['sfIdJpsi'] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
-sysdict['sfReco'] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
 sysdict['tauBr'] = {'type':'shape', 'proc':['jpsi_tau'], 'size':1.0}
 sysdict['tauReco'] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.05}
-sysdict['trigger'] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
+
 
 nbins = None
 
@@ -76,8 +77,15 @@ nbins = None
 with open('datacard/datacard_tauhad_' + options.year + '.txt', mode="w") as f:
     f.write('imax ' + str(len(bins)) + '\n')
     f.write('jmax ' + str(len(processes)-1) + '\n')
-    if doBBB:
-        f.write('kmax 885\n')
+
+    hist_ = input_file.Get(bins[-1].lower() + '/data_obs')
+    nbins = hist_.GetXaxis().GetNbins()
+    print 'nbin=', nbins
+
+    if options.bbb:
+        total = len(sysdict) + len(bins)*(len(processes)-1)*nbins
+        print 'total=', total
+        f.write('kmax ' + str(total) + '\n')
     else:
         f.write('kmax ' + str(len(sysdict)) + '\n')
 
@@ -97,7 +105,7 @@ with open('datacard/datacard_tauhad_' + options.year + '.txt', mode="w") as f:
     f.write('observation \t')
     for bin in bins:    
         hist = input_file.Get(bin.lower() + '/data_obs')
-        nbins = hist.GetXaxis().GetNbins()
+#        nbins = hist.GetXaxis().GetNbins()
         f.write(str(int(hist.Integral())) + '\t')
     f.write('\n')
 
@@ -150,9 +158,33 @@ with open('datacard/datacard_tauhad_' + options.year + '.txt', mode="w") as f:
                         _year2 = nuisance.split('_')[1]
                         if _year != _year2: wstr = '-'
 
+                if nuisance.find('bcnorm')!=-1 and process in var['proc']:
+                    _year = bin.split('_')[2]
+                    _year2 = nuisance.split('_')[1]
+                    if _year != _year2: wstr = '-'
+
                 f.write(wstr + '\t')
         f.write('\n')
 
+
+
+    if options.bbb:
+
+        for bin_bbb in bins:
+            for process_bbb in processes:
+
+                if process_bbb=='fakes': continue
+                for ii in range(nbins):
+                
+                    dstr = process_bbb + '_bbb' + str(ii+1) + bin_bbb + '\t shape'
+                
+                    for bin in bins:                
+                        for process in processes:
+                            if process==process_bbb and bin_bbb==bin:
+                                dstr += '\t 1.0'
+                            else:
+                                dstr += '\t -'
+                    f.write(dstr + '\n')
 
 
     for bin in bins:    
@@ -160,15 +192,7 @@ with open('datacard/datacard_tauhad_' + options.year + '.txt', mode="w") as f:
             if process=='fakes': continue
             f.write('bc \t rateParam \t ' + bin + '\t' + process + '\t 1 \n')
 
-#    for bin in bins:    
-#        for ip, process in enumerate(processes):
-#            hist = input_file.Get(bin.lower() + '/' + process)
-#            f.write(int(hist.Integral()))
-#    f.write('\n')
 
-    
-
-    print 'nbin=', nbins
     for bin in bins:    
         if bin.find('sb')==-1: continue
         for ii in range(nbins):
@@ -182,7 +206,9 @@ with open('datacard/datacard_tauhad_' + options.year + '.txt', mode="w") as f:
 
     f.write('\n')
 
-#    if doBBB:
+
+
+
 #        for ii in range(144):
 #            f.write('jpsi_tau_bbb' + str(ii+1) + '\t  shape \t 1.0 \t - \t - \t - \t - \t - \t - \t -\n')
 #        for ii in range(144):

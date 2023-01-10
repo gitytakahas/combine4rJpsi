@@ -88,9 +88,12 @@ void examplews(){
 	    bbb_string += h->GetName();
 	    bbb_string += "_bbb";
 	    bbb_string += ibin;
+	    bbb_string += target_sb; 
 	    bbb_string += (isUp==0) ? "Up" : "Down";
 	    bbb_string += "_";
 	    bbb_string += target_sb; 
+	    //	    bbb_string += "_";
+	    //	    bbb_string += target_sb;
 	
 	    TH1D histo(bbb_string, bbb_string, nbins, xmin, xmax);	
 	    
@@ -212,10 +215,13 @@ void examplews(){
 	    bbb_string += h->GetName();
 	    bbb_string += "_bbb";
 	    bbb_string += ibin;
-	    bbb_string += (isUp==0) ? "Up" : "Down";
+	    bbb_string += target_sr;
+	    bbb_string += (isUp==0) ? "Up" : "Down";	
 	    bbb_string += "_";
 	    bbb_string += target_sr;
-	
+	    //	    bbb_string += "_";
+	    //	    bbb_string += target_sr;
+
 	    TH1D histo(bbb_string, bbb_string, nbins, xmin, xmax);	
 	    
 	    for(int jbin=1; jbin <= nbins; jbin++){

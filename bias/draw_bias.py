@@ -9,7 +9,7 @@ gROOT.SetBatch(True)
 #gROOT.SetBatch(False)
 officialStyle(gStyle)
 gStyle.SetOptTitle(0)
-gStyle.SetOptStat(111)
+gStyle.SetOptStat("emr")
 gStyle.SetOptFit(111)
 
 
@@ -27,9 +27,10 @@ gStyle.SetOptFit(111)
 ##nbin = data_sb.GetXaxis().GetNbins()
 #>>>>>>> origin/main
 
+#os.system('rm -f fitDiagnostics.root')
+#os.system('hadd -f fitDiagnostics.root fitDiagnostics*.root')
 
-
-filename = 'output/sm_cards/LIMITS/fitDiagnosticsTest.root'
+filename = 'fitDiagnostics.root'
 
 file = TFile(filename)
 tree = file.Get('tree_fit_sb')
@@ -39,7 +40,7 @@ bias = TH1F('bias', 'bias', 50,-6,6)
 bias.GetXaxis().SetTitle('Pull')
 bias.GetYaxis().SetTitle('a.u.')
 
-tree.Draw("(r-0.71)/(0.5*(rHiErr+rLoErr))>>bias")
+tree.Draw("(r-0.71)/(0.5*(rHiErr+rLoErr))>>bias", "fit_status==0")
 
 canvas = TCanvas('canvas')
 bias.Draw()
@@ -47,3 +48,4 @@ bias.Fit('gaus')
 
 canvas.RedrawAxis()                
 canvas.SaveAs('bias.pdf')
+canvas.SaveAs('bias.gif')
