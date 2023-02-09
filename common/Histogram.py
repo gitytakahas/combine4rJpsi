@@ -102,34 +102,16 @@ class Histogram( object ):
             if legendLine is None:
                 legendLine = self.name
         opt = 'f'
-        legname = legendLine
-
         if self.weighted.GetFillStyle()==0:
-            opt = 'lep'
+            opt = 'epl'
 
-        if legendLine.find('LQ')!=-1:
+        if legendLine.find('Scalar LQ')!=-1:
             opt = 'l'
-            
-#            print 'Check', legendLine, self.name
-#            if self.name.find('SLQ')!=-1:
-#                self.obj.SetLineStyle(2)
 
- #           import pdb; pdb.set_trace()
-            legname = legendLine + '(' + self.name.split('-')[2].replace('M','') + ')'
-            
-        if legendLine.find('Zprime')!=-1:
-            opt = 'l'
-            legname = legendLine + '(' + self.name.split('_')[1].replace('M','') + ')'
-
-
-        legend.AddEntry(self.obj, legname, opt)
-#        legend.SetTextSize(0.05)
-
- #       if legendLine.find('Scalar LQ')!=-1:
- #           legend.AddEntry(self.obj, '(#lambda = 1, #beta = 1)', '')
-
-
-#        legend.AddEntry(self.obj, legendLine, opt)
+        legend.AddEntry(self.obj, legendLine + ' (' +  str(int(self.obj.GetSumOfWeights()))  + ')', opt)
+        legend.SetTextSize(0.05)
+#        if legendLine.find('Scalar LQ')!=-1:
+#            legend.AddEntry(self.obj, '(#lambda = 1, #beta = 1)', '')
 
     def Draw(self, opt='', weighted=True):
         '''Draw the weighted (or original) histogram.'''

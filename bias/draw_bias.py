@@ -30,7 +30,7 @@ gStyle.SetOptFit(111)
 #os.system('rm -f fitDiagnostics.root')
 #os.system('hadd -f fitDiagnostics.root fitDiagnostics*.root')
 
-filename = 'fitDiagnostics.root'
+filename = 'test.root'
 
 file = TFile(filename)
 tree = file.Get('tree_fit_sb')

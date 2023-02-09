@@ -15,20 +15,6 @@ def add_lumi(luminumber):
     lumi.AddText(str(luminumber) + " fb^{-1} (13TeV)")
     return lumi
 
-def add_assum():
-    lowX=0.68
-    lowY=0.55
-    lumi  = ROOT.TPaveText(lowX, lowY+0.06, lowX+0.65, lowY+0.16, "NDC")
-    lumi.SetBorderSize(   0 )
-    lumi.SetFillStyle(    0 )
-    lumi.SetTextAlign(   12 )
-    lumi.SetTextColor(    1 )
-    lumi.SetTextSize(0.055)
-    lumi.SetTextFont (   42 )
-#    lumi.AddText("2016, " + str(luminumber) + " fb^{-1} (13TeV)")
-    lumi.AddText("R(J/#psi) = 1")
-    return lumi
-
 
 def add_CMS():
     lowX=0.15
@@ -40,7 +26,7 @@ def add_CMS():
     lumi.SetFillStyle(    0 )
     lumi.SetTextAlign(   12 )
     lumi.SetTextColor(    1 )
-    lumi.AddText("CMS Preliminary")
+    lumi.AddText("CMS")
     return lumi
 
 
@@ -76,7 +62,7 @@ def add_Preliminary():
     return lumi
 
 def createRatioCanvas(name, errorBandFillColor=14, errorBandStyle=3354):
-    cv = ROOT.TCanvas(name.replace('.pdf', ''), name.replace('.pdf', ''), 10, 10, 600, 600)
+    cv = ROOT.TCanvas(name.replace('.pdf', ''), name.replace('.pdf', ''), 10, 10, 1200, 600)
 
     # this is the tricky part...
     # Divide with correct margins
@@ -112,7 +98,7 @@ def createRatioCanvas(name, errorBandFillColor=14, errorBandStyle=3354):
     return cv
 
 
-class DisplayManager(object):
+class DisplayManager_wide(object):
 
     def __init__(self, name, ratio, isLog, lumi, clabel, xmin=0.42, ymin=0.6):
 
@@ -339,8 +325,7 @@ class DisplayManager(object):
         l2.Draw("same")
         l3=add_Preliminary()
 #        l3.Draw("same")
-        l5=add_assum()
-        l5.Draw('same')
+
 
         l4=add_channel(self.clabel)
         l4.Draw("same")

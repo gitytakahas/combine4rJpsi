@@ -15,7 +15,7 @@ EXTRAOPT="--X-rtd MINIMIZER_analytic --robustFit=1"
 RMIN=0
 RMAX="" #1.9
 
-cd impacts
+#cd impacts
 for log in $LOGS; do
   
   # SETTINGS

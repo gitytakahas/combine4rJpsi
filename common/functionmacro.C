@@ -1,3 +1,11 @@
+/*
+  functionmacro.C : provide QCD weights at drawing level
+  modified from : https://github.com/CMS-HTT/QCDModelingEMu
+
+  4 April 2017 Y.T
+ */
+
+
 #include "TMath.h"
 #include "TFile.h"
 #include "TH1.h"
@@ -5,52 +13,46 @@
 #include <iostream>
 #include "TROOT.h"
 
-//#include "RooWorkspace.h"
-//#include "RooRealVar.h"
+#include "RooWorkspace.h"
+#include "RooRealVar.h"
 #include "TFile.h"
-//#include "TLorentzVector.h"
+#include "TLorentzVector.h"
 
 
 //RooWorkspace *w;
 //TLorentzVector vec;
 //TLorentzVector vec_check;
 
-TH1F *h_pu_data;
-TH1F *h_pu_mc;
-TH2F *h_muon;
+TFile *f;
+TH1F *mc;
+TH1F *weight;
 
-void puReadFile(){
 
-  // Pileup profile 
+TFile *tauf;
+TH1F *taubr_up;
+TH1F *taubr_down;
+TH2F *taubr_ref;
+TH1F *Bcweight1D_up;
+TH1F *Bcweight1D_down;
+TFile *fmap;
+
+void ReadFile(){
+
+  std::cout << "Read file";
+
+  f = new TFile("datacard/inclusive/b_mass_sf.root");
+
+  mc = (TH1F*) f->Get("inclusive/bg_ul");
+  //  mc->Scale(1./mc->GetSumOfWeights());
+
+  weight = (TH1F*) f->Get("inclusive/data_obs");  
+  //  weight->Scale(1./weight->GetSumOfWeights());  
   
-  TFile *data = new TFile("correction/pileup/Data_PileUp_2017_69p2.root");
-  TFile *mc = new TFile("correction/pileup/MC_PileUp_Winter17_PU25ns_V2_fromMC.root");
-  
-  h_pu_data = (TH1F*) data->Get("pileup");
-  h_pu_mc = (TH1F*) mc->Get("pileup");
-  
-  h_pu_data->Scale(1./h_pu_data->Integral());
-  h_pu_mc->Scale(1./h_pu_mc->Integral());
+  weight->Divide(mc);
 
-  //  std::cout << h_pu_data->GetSumOfWeights() << " " << h_pu_data->GetNbinsX() << std::endl;
-  //  std::cout << h_pu_mc->GetSumOfWeights() << " " << h_pu_mc->GetNbinsX() << std::endl;
-
-  if(h_pu_data->GetNbinsX() != h_pu_mc->GetNbinsX()){
-    std::cout << "Pileup histogram has different binning !" << std::endl;
-  }
-
-  
-  //  TFile *muon = new TFile("leptonSF/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root");
-  //  h_muon = (TH2F*) muon->Get("IsoMu27_PtEtaBins/pt_abseta_ratio");
-
-
-  // Muon ID/Iso/Trigger SF
-
-  
-
-  //  TFile *f = new TFile("CorrectionsWorkspace/htt_scalefactors_v16_5.root");
-  //  w = (RooWorkspace*)f->Get("w");
   //  f->Close();
+ 
+  std::cout << "... end" << std::endl;
 
 }
 
@@ -73,7 +75,10 @@ float getCorrection(int year, float xgbs){
     p2 = 0.00711602;
   }
 
+
   float weight = p0 + p1*xgbs + p2*xgbs*xgbs;
+
+  //  std::cout << year << " " << weight << std::endl;
 
   return weight;
 
@@ -81,52 +86,115 @@ float getCorrection(int year, float xgbs){
 }
 
 
-float getPUweight(const int npu){
+void ReadFileTau(){
+
+  std::cout << "Read tau BR file";
+
+  tauf = new TFile("tauola/correction.root");
+
+  //  mc = (TH1F*) f->Get("inclusive/bg_ul");
+  //  mc->Scale(1./mc->GetSumOfWeights());
+
+  taubr_up = (TH1F*) tauf->Get("envelope_up");  
+  taubr_down = (TH1F*) tauf->Get("envelope_down");  
+  taubr_ref = (TH2F*) tauf->Get("evt1_set1_2d");
+  //  weight->Scale(1./weight->GetSumOfWeights());  
   
-  float data = h_pu_data->GetBinContent(h_pu_data->FindBin(npu));
-  float mc = h_pu_mc->GetBinContent(h_pu_mc->FindBin(npu));
+  //  weight->Divide(mc);
 
-  //  std::cout << data << " " << mc << " " << npu << " -> " << data/mc << std::endl;
+  //  f->Close();
+ 
 
-  if(mc > 0.){
-    return data/mc;
-    //    std::cout << "pu weight =" << data/mc << std::endl;
-  }//else{
-    //std::cout << "No predefined pileup weights" << std::endl;
-  //  }
-  return 1;
+  std::cout << ".... end" << std::endl;
 
 }
 
-//float getMuWeight(const float pt, const float eta){
-//  
-//  float abseta = TMath::Abs(eta);
-//
-//  Int_t xbin = h_muon->GetXaxis()->FindBin(pt);
-//  Int_t ybin = h_muon->GetYaxis()->FindBin(abseta);
-//  
-//  Float_t sf = h_muon->GetBinContent(xbin, ybin);
-//  
-//  //  std::cout << "pt = " << pt <<  " -> " << xbin << ",  eta = " << eta << " -> "  << ybin << " => SF = " << sf << std::endl;
-//  return sf;
-//
-//}
+void ReadFileBcWeight(){
+
+  std::cout << "Read Bc weight file";
+
+  fmap = new TFile("correction_complete_BcPt.root");
+  Bcweight1D_up = (TH1F*) fmap->Get("mc_weight_up");   
+  Bcweight1D_down = (TH1F*) fmap->Get("mc_weight_down");
+
+  std::cout << ".... end" << std::endl;
+}
+
+Float_t getBcWeight(float pt, float direction){
+  Float_t Bcw = 1; 
+  Float_t binweight=1; 
+  if (direction > 0.5 ) binweight = Bcweight1D_up->GetBinContent(Bcweight1D_up->FindBin(pt));  
+  if (direction < -0.5 ) binweight = Bcweight1D_down->GetBinContent(Bcweight1D_down->FindBin(pt));  
+  Bcw=binweight; 
+  return Bcw;				       
+}
 
 
-//float getMuTrigWeight(Double_t pt, Double_t eta){
-//  
-//
-//  w->var("m_pt")->setVal(pt);
-//  w->var("m_eta")->setVal(eta);
-//  //  double muon_id_scalefactor = w->function("m_id_ratio")->getVal();
-//  //  double muon_trg_sf = w->function("m_iso_ratio")->getVal();
-//  double muon_trg_sf = w->function("m_trg24OR_ratio")->getVal();
-//
-//  //  std::cout << pt << " " << eta << " " << muon_trg_sf<< std::endl;
-//  
-//  return muon_trg_sf;
-//
-//}
+Float_t getWeight(float val){
+
+  //  std::cout << "getWeight for " << val << std::endl;
+
+  Int_t binid = weight->GetXaxis()->FindBin(val);
+  
+  //  std::cout <<"binid=" << binid << std::endl;
+  
+  Float_t w = weight->GetBinContent(binid);
+  //  Float_t w = 1.;
+
+  //  std::cout << "weight: b mass = "<<  val << ", w = "  << w << std::endl;
+  return w;
+
+}
+
+
+Float_t getTauBrWeight_up(float val1, float val2){
+
+  //  std::cout << "getWeight for " << val << std::endl;
+
+  //  Int_t binid = taubr_up->GetXaxis()->FindBin(val);
+  
+  if(val1==-1 || val2==-1){
+    //    std::cout << "negative value!" << std::endl;
+    return 1;
+  }
+
+  Int_t binid_x = taubr_ref->GetXaxis()->FindBin(val1);
+  Int_t binid_y = taubr_ref->GetYaxis()->FindBin(val2);
+  Int_t binid = taubr_ref->GetXaxis()->GetNbins()*(binid_y - 1) + binid_x; 
+  //  std::cout <<val1 << " " << val2 << ", binid_x =" << binid_x << ", binid_y= " << binid_y << ", binid=" << binid << std::endl;
+  
+  Float_t w = taubr_up->GetBinContent(binid);
+  //  Float_t w = 1.;
+
+  //  std::cout << "weight: b mass = "<<  val << ", w = "  << w << std::endl;
+  return w;
+
+}
+
+Float_t getTauBrWeight_down(float val1, float val2){
+
+  if(val1==-1 || val2==-1){
+    //    std::cout << "negative value!" << std::endl;
+    return 1;
+  }
+
+  //  std::cout << "getWeight for " << val << std::endl;
+
+  //  Int_t binid = taubr_down->GetXaxis()->FindBin(val); 
+  Int_t binid_x = taubr_ref->GetXaxis()->FindBin(val1);
+  Int_t binid_y = taubr_ref->GetYaxis()->FindBin(val2);
+  Int_t binid = taubr_ref->GetXaxis()->GetNbins()*(binid_y - 1) + binid_x; 
+  //  Int_t binid = taubr_ref->FindBin(val1, val2);
+ 
+  //  std::cout <<"binid=" << binid << std::endl;
+  
+  Float_t w = taubr_down->GetBinContent(binid);
+  //  Float_t w = 1.;
+
+  //  std::cout << "weight: b mass = "<<  val << ", w = "  << w << std::endl;
+  return w;
+
+}
 
 
 Float_t deltaPhi(Float_t p1, Float_t p2){
@@ -143,106 +211,13 @@ Float_t deltaPhi(Float_t p1, Float_t p2){
 }
 
 
-//Float_t tauID_up(Float_t pt){
-//
-//  Float_t sf = 1. + 0.05*pt/1000;
-//
-//  return sf;
-//}
-//
-//Float_t tauID_down(Float_t pt){
-//
-//  Float_t sf = 1. - 0.35*pt/1000;
-//
-//  return sf;
-//}
-//
-//
-//
-//Float_t muID_up(Float_t pt){
-//
-////  if(abs(eta) < 1.2) return 1;
-////
-////
-////  vec.SetPtEtaPhiM(pt, eta, phi, m);
-////  Float_t p = vec.P();
-////
-////  Float_t sf = (0.9893 - p * 3.666*0.00001) / (0.9974 - p * 1.721 * 0.00001);
-//
-//
-//  Float_t sf = 1;
-//  if(pt < 300 ){
-//    sf = 1.05;
-//  }else{
-//    sf = 1.1;
-//  }
-//
-//
-//  //  std::cout << pt << " " << eta << " " << phi << " " << m  << "-> p = " << p  << "-> SF = " << sf << std::endl;
-//
-//  return sf;
-//}
-//
-//
-//Float_t muID_down(Float_t pt){
-//
-////  if(abs(eta) < 1.2) return 1;
-////
-////
-////  vec.SetPtEtaPhiM(pt, eta, phi, m);
-////  Float_t p = vec.P();
-////
-////  Float_t sf = (0.9893 - p * 3.666*0.00001) / (0.9974 - p * 1.721 * 0.00001);
-//
-//
-//  Float_t sf = 1;
-//  if(pt < 300 ){
-//    sf = 0.95;
-//  }else{
-//    sf = 0.9;
-//  }
-//
-//
-//  //  std::cout << pt << " " << eta << " " << phi << " " << m  << "-> p = " << p  << "-> SF = " << sf << std::endl;
-//
-//  return sf;
-//}
-//
-//
-//
-////Float_t muP(Float_t pt, Float_t eta, Float_t phi, Float_t m){
-////
-////  vec_check.SetPtEtaPhiM(pt, eta, phi, m);
-////  Float_t p = vec_check.P();
-////
-////  return p;
-////}
-//
-//
-//Float_t jtauID_up(Float_t pt){
-//
-//  Float_t sf = 1.;
-//
-//  return sf;
-//}
-//Float_t jtauID_down(Float_t pt){
-//
-//  Float_t sf = 1.; 
-////  if(pt < 120){
-////    sf = 1.2 - 0.004*pt;
-////  }else{
-////    sf = 0.72;
-////  }
-//
-//
-//  sf = 1.2 - 0.004*pt;
-//
-//  return sf;
-//}
-
-
 
 
 void functionmacro(){
-  puReadFile();
+  std::cout << std::endl;
+  std::cout << "Initialize functionmacro.C ..." << std::endl;
+  std::cout << std::endl;
+  //  ReadFile();
+  ReadFileTau();
+  ReadFileBcWeight();
 }

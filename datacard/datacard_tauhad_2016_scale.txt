@@ -2,9 +2,9 @@ imax 2
 jmax 3
 kmax 118
 --------------------------------------------------------------------------------
-shapes 	 * 	 tauhad_sr_2016 	 param_tauhad_ws.root wspace:$PROCESS_tauhad_sr_2016 wspace:$PROCESS_$SYSTEMATIC_tauhad_sr_2016
-shapes 	 * 	 tauhad_sb_2016 	 param_tauhad_ws.root wspace:$PROCESS_tauhad_sb_2016 wspace:$PROCESS_$SYSTEMATIC_tauhad_sb_2016
-shapes 	 data_obs 	 tauhad_* 	 param_tauhad_ws.root wspace:$PROCESS wspace:$PROCESS_$SYSTEMATIC 
+shapes 	 * 	 tauhad_sr_2016 	 param_tauhad_ws_scale.root wspace:$PROCESS_tauhad_sr_2016 wspace:$PROCESS_$SYSTEMATIC_tauhad_sr_2016
+shapes 	 * 	 tauhad_sb_2016 	 param_tauhad_ws_scale.root wspace:$PROCESS_tauhad_sb_2016 wspace:$PROCESS_$SYSTEMATIC_tauhad_sb_2016
+shapes 	 data_obs 	 tauhad_* 	 param_tauhad_ws_scale.root wspace:$PROCESS wspace:$PROCESS_$SYSTEMATIC 
 --------------------------------------------------------------------------------
 bin 	tauhad_sr_2016	tauhad_sb_2016	
 observation 	5377	43386	
@@ -12,7 +12,7 @@ observation 	5377	43386
 bin 	tauhad_sr_2016	tauhad_sr_2016	tauhad_sr_2016	tauhad_sr_2016	tauhad_sb_2016	tauhad_sb_2016	tauhad_sb_2016	tauhad_sb_2016	
 process 	jpsi_tau	bc_others	jpsi_hc	fakes	jpsi_tau	bc_others	jpsi_hc	fakes	
 process 	0	1	2	3	0	1	2	3	
-rate 	193.82	83.71	282.21	1	298.23	243.06	436.33	1	
+rate 	123.83	83.71	282.21	1	190.54	243.06	436.33	1	
 --------------------------------------------------------------------------------
 fakeNorm_2016 	lnN	-	-	-	1.3	-	-	-	-	
 bcnorm_2016 	lnN	1.12	1.12	1.12	-	1.12	1.12	1.12	-	

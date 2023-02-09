@@ -6,8 +6,8 @@
 #SBATCH -e cn-test.err  # replace default slurm-SLURM_JOB_ID.err
 #SBATCH -o cn-test.out  # replace default slurm-SLURM_JOB_ID.out
 
-workspace="/t3home/ytakahas/work/combination/CMSSW_10_2_13/src/CombineHarvester/combine4rJpsi_comb/datacard/combine_all.root"
-trial="30"
+workspace="/work/ytakahas/work/Combination/CMSSW_10_2_13/src/CombineHarvester/combine4rJpsi_comb/datacard/combine_all.root"
+trial="20"
 toy="-t ${trial} --expectSignal 0.71"
 
 

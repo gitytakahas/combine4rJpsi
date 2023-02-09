@@ -39,7 +39,7 @@ class Stack:
             self.totalHist.Add( hist )
         
     def Draw(self, opt='',
-             xmin=None, xmax=None, ymin = None, ymax=None, factor=1.):
+             xmin=None, xmax=None, ymin = None, ymax=None, factor=None):
         '''Draw the stack. opt are the ROOT options'''
         if len( self.hists )==0:
             return
@@ -61,7 +61,6 @@ class Stack:
         # we draw it as hist so that the markers don't appear.
         # hist = hists[0]
         hist = self.totalHist
-        
         # hist.Draw('hist')
         hist.Draw(opt)  #### riccardo
         if self.ytitle is not None:
@@ -94,7 +93,8 @@ class Stack:
             return
         #self.totalHist.weighted.SetFillColor(kGray)
         self.totalHist.weighted.SetFillColor(1)
-        self.totalHist.weighted.SetFillStyle(3544)
+#        self.totalHist.weighted.SetFillStyle(3544)
+        self.totalHist.weighted.SetFillStyle(3003)
         self.totalHist.Draw('samee2')
         
     def SetStyle(self, style ):

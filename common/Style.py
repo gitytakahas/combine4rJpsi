@@ -24,8 +24,11 @@ class Style:
 
     def formatHistoAxis( self, hist ):
         hist.GetXaxis().SetTitleSize(0.05)
-        hist.GetYaxis().SetTitleSize(0.05)
-        hist.GetYaxis().SetTitleOffset(1.3)        
+#        hist.GetXaxis().SetTitleSize(0.13)
+#        hist.GetYaxis().SetTitleSize(0.05)
+        hist.GetYaxis().SetTitleSize(0.07)
+        hist.GetYaxis().SetLabelSize(0.06)
+        hist.GetYaxis().SetTitleOffset(0.85)        
         
     def formatHisto( self, hist, title=None):
         hist.SetMarkerStyle( self.markerStyle )

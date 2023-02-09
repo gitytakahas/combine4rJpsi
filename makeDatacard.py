@@ -4,6 +4,7 @@ from optparse import OptionParser, OptionValueError
 usage = "usage: python compare.py" 
 parser = OptionParser(usage) 
 parser.add_option('-b', '--bbb', action="store_true", default=True, dest='bbb')
+parser.add_option('-s', '--scale', action="store_true", default=False, dest='scale')
 parser.add_option("-y", "--year", default="all", type="string", dest="year")
 (options, args) = parser.parse_args() 
 
@@ -12,9 +13,12 @@ if options.year!='all':
     eras = [options.year]
 
 
+filename = "/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/tau_rhomass_unrolled_var.root"
 
+if options.scale:
+    filename = "/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/tau_rhomass_unrolled_var_scaled.root"
 
-input_file = TFile("/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/tau_rhomass_unrolled_var.root")
+input_file = TFile(filename)
 
 bins = []
 
@@ -47,7 +51,7 @@ sysdict = OrderedDict()
 
 for year in eras:
     sysdict['fakeNorm_' + year] = {'type':'lnN', 'proc':['fakes'], 'size':1.3}
-    sysdict['bcnorm_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.05}
+    sysdict['bcnorm_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.12}
     sysdict['trigger_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
     sysdict['sfIdJpsi_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
 
@@ -78,8 +82,12 @@ sysdict['tauReco'] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'],
 
 nbins = None
 
+output='datacard/datacard_tauhad_' + options.year + '.txt'
 
-with open('datacard/datacard_tauhad_' + options.year + '.txt', mode="w") as f:
+if options.scale:
+    output='datacard/datacard_tauhad_' + options.year + '_scale.txt'
+
+with open(output, mode="w") as f:
     f.write('imax ' + str(len(bins)) + '\n')
     f.write('jmax ' + str(len(processes)-1) + '\n')
 
@@ -97,9 +105,16 @@ with open('datacard/datacard_tauhad_' + options.year + '.txt', mode="w") as f:
     f.write('-'*80 + '\n')
 
     for bin in bins:
-        f.write('shapes \t * \t ' + bin + ' \t param_tauhad_ws.root wspace:$PROCESS_' + bin + ' wspace:$PROCESS_$SYSTEMATIC_' + bin + '\n')
+        if options.scale:
+            f.write('shapes \t * \t ' + bin + ' \t param_tauhad_ws_scale.root wspace:$PROCESS_' + bin + ' wspace:$PROCESS_$SYSTEMATIC_' + bin + '\n')
+        else:
+            f.write('shapes \t * \t ' + bin + ' \t param_tauhad_ws.root wspace:$PROCESS_' + bin + ' wspace:$PROCESS_$SYSTEMATIC_' + bin + '\n')
 
-    f.write('shapes \t data_obs \t tauhad_* \t param_tauhad_ws.root wspace:$PROCESS wspace:$PROCESS_$SYSTEMATIC \n')
+    if options.scale:
+        f.write('shapes \t data_obs \t tauhad_* \t param_tauhad_ws_scale.root wspace:$PROCESS wspace:$PROCESS_$SYSTEMATIC \n')
+    else:
+        f.write('shapes \t data_obs \t tauhad_* \t param_tauhad_ws.root wspace:$PROCESS wspace:$PROCESS_$SYSTEMATIC \n')
+
     f.write('-'*80 + '\n')
 
     f.write('bin \t')

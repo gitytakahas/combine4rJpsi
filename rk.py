@@ -21,11 +21,12 @@ dict = OrderedDict()
 #dict['rks_high'] = {'val':0.69, 'up':0.11, 'down':-0.07, 'sup':0.05, 'sdown':-0.05, 'q2low':1.1, 'q2high':6.0, 'leg':'R_{K^{*0}}'}
 #dict['rksp'] = {'val':0.7, 'up':0.18, 'down':-0.13, 'sup':0.03, 'sdown':-0.04, 'q2low':0.045, 'q2high':6.0, 'leg':'R_{K^{*+}}'}
 #dict['rk'] = {'val':0.846, 'up':0.042, 'down':-0.039, 'sup':0.013, 'sdown':-0.012, 'q2low':1.1, 'q2high':6.0, 'leg':'R_{K^{+}}'}
-dict['#tau_{had} combined'] = {'val':0.71, 'up':0.097, 'down':-0.096, 'sup':0.170, 'sdown':-0.151, 'leg':'#tau_{had}, comb.'}
-dict['#tau_{had} 2016'] = {'val':0.71, 'up':0.242, 'down':-0.238, 'sup':0.358, 'sdown':-0.323, 'leg':'#tau_{had}, 2016'}
-dict['#tau_{had} 2017'] = {'val':0.71, 'up':0.174, 'down':-0.171, 'sup':0.263, 'sdown':-0.243, 'leg':'#tau_{had}, 2017'}
-dict['#tau_{had} 2018'] = {'val':0.71, 'up':0.134, 'down':-0.132, 'sup':0.226, 'sdown':-0.204, 'leg':'#tau_{had}, 2018'}
+dict['#tau_{had} combined'] = {'val':0.71, 'up':0.054, 'down':-0.054, 'sup':0.168, 'sdown':-0.155, 'leg':'#tau_{had}, comb.'}
+dict['#tau_{had} 2018'] = {'val':0.71, 'up':0.059, 'down':-0.059, 'sup':0.187, 'sdown':-0.176, 'leg':'#tau_{had}, 2018'}
+dict['#tau_{had} 2017'] = {'val':0.71, 'up':0.064, 'down':-0.064, 'sup':0.213, 'sdown':-0.206, 'leg':'#tau_{had}, 2017'}
+dict['#tau_{had} 2016'] = {'val':0.71, 'up':0.069, 'down':-0.068, 'sup':0.247, 'sdown':-0.243, 'leg':'#tau_{had}, 2016'}
 #dict['#tau_{lep} 2018'] = {'val':0.71, 'up':0.094, 'down':-0.093, 'sup':0.252, 'sdown':-0.249, 'leg':'#tau_{lep}, 2018'}
+dict['LHCb'] = {'val':0.71, 'up':0.17, 'down':-0.17, 'sup':0.18, 'sdown':-0.18, 'leg':'LHCb, Run1'}
 
 def add_CMS():
     lowX=0.22
@@ -46,7 +47,7 @@ cnt = 1
 graphs = []
 graphs_tot = []
 
-frame = TH2F('frame', 'frame', 100,0.,1.4, 5,0,5)
+frame = TH2F('frame', 'frame', 100,0.,1.4, len(dict),0,len(dict))
 
 
 
@@ -121,7 +122,7 @@ for key, var in dict.items():
     latex.DrawLatex(-0.3, float(cnt-0.5),var['leg'])
     cnt += 1
 
-line = TLine(0.71, 0, 0.71, 5.)
+line = TLine(0.71, 0, 0.71, len(dict))
 line.SetLineStyle(2)
 line.Draw()
 
@@ -130,9 +131,17 @@ line.Draw()
 #line2.Draw()
 
 
+tbox = TBox(0.25,0,0.28,len(dict))
+tbox.SetLineWidth(3)
+tbox.SetLineColor(2)
+tbox.SetFillStyle(3001)
+tbox.SetFillColor(2)
+tbox.Draw('same')
+
 m1=add_CMS()
 m1.Draw('same')
 
 
 canvas.RedrawAxis()
 canvas.SaveAs('Plots/rjpsi_sensitivity.pdf')
+canvas.SaveAs('Plots/rjpsi_sensitivity.gif')

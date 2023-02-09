@@ -2,7 +2,7 @@ from operator import attrgetter
 import copy
 import fnmatch
 
-from ROOT import TLegend, TLine, TPad, TFile, gROOT
+from ROOT import TLegend, TLine, TPad, TFile, gROOT, TStyle
 
 #from CMGTools.RootTools.DataMC.Histogram import Histogram
 #from CMGTools.RootTools.DataMC.Stack import Stack
@@ -14,13 +14,18 @@ from H2TauStyle import histPref, Style
 
 
 def ymax(hists):
+
     def getmax(h):
         hw = h.weighted
         return hw.GetBinContent(hw.GetMaximumBin())
     maxs = map(getmax, hists)
     ymax = max(maxs)*1.1
+
     if ymax == 0:
         ymax = 1
+
+
+    print 'CHECK!!!!!!!!!!!!!!!!!!!!'
     return ymax
 
 
@@ -34,16 +39,18 @@ class DataMCPlot(object):
     _f_keeper = {}
     _t_keeper = {}
 
-    def __init__(self, name, signal2show):
+    def __init__(self, name):
         self.histosDict = {}
         self.histos = []
         self.supportHist = None
         self.name = name
+
         self.stack = None
         self.legendOn = True
         self.legend = None
-        self.legendBorders = 0.20, 0.43, 0.44, 0.86
+        self.legendBorders = 0.15, 0.63, 0.87, 0.87
         self.legendPos = 'left'
+        self.legendColumns = 2
         # self.lastDraw = None
         # self.lastDrawArgs = None
         self.nostack = None
@@ -52,13 +59,11 @@ class DataMCPlot(object):
         self.groups = {}
         self.axisWasSet = False
         self.histPref = histPref
-        self.signal2show = signal2show
 
     def __contains__(self, name):
         return name in self.histosDict
 
-    def __getitem__(self, name):        
-#        if name in self.histosDict:
+    def __getitem__(self, name):
         return self.histosDict[name]
 
     def readTree(self, file_name, tree_name='tree'):
@@ -165,10 +170,7 @@ class DataMCPlot(object):
         '''Returns a histogram.
 
         Print the DataMCPlot object to see which histograms are available.'''
-        if self.histosDict.has_key(histName):
-            return self.histosDict[histName]
-        else:
-            return None
+        return self.histosDict[histName]
 
     def DrawNormalized(self, opt=''):
         '''All histograms are drawn as PDFs, even the stacked ones'''
@@ -207,6 +209,12 @@ class DataMCPlot(object):
             self.legend.SetFillColor(0)
             self.legend.SetFillStyle(0)
             self.legend.SetLineColor(0)
+            self.legend.SetBorderSize(0)
+            self.legend.SetTextFont(42)
+            self.tstyle = TStyle()
+            self.tstyle.SetLegendTextSize(0.007)
+            self.legend.SetNColumns(self.legendColumns)
+            self.legend.SetColumnSeparation((self.legendBorders[2]-self.legendBorders[0])/self.legendColumns -0.3)
         else:
             self.legend.Clear()
         hists = self._SortedHistograms(reverse=True)
@@ -217,12 +225,7 @@ class DataMCPlot(object):
                 if not hist.legendLine:
                     hist.legendLine = hist.name
                 hist.legendLine += ' ({norm:.1f})'.format(norm=hist.Yield())
-
-            if hist.name.find('LQ')!=-1 or hist.name.find('Zprime')!=-1:
-                if hist.name in self.signal2show:
-                    hist.AddEntry(self.legend)
-            else:
-                hist.AddEntry(self.legend)
+            hist.AddEntry(self.legend)
 
     def DrawLegend(self, ratio=False, print_norm=False):
         '''Draw the legend.'''
@@ -381,6 +384,8 @@ class DataMCPlot(object):
         '''Draw all histograms, some of them in a stack.
 
         if Histogram.stack is True, the histogram is put in the stack.'''
+        
+#        print('factor=', factor)
         self._BuildStack(self._SortedHistograms(), ytitle='Events')
         same = 'same'
         if len(self.nostack) == 0:
@@ -392,7 +397,7 @@ class DataMCPlot(object):
                 self.supportHist = hist
         self.stack.Draw(opt+same,
                         xmin=xmin, xmax=xmax,
-                        ymin=ymin, ymax=ymax, factor=factor)
+                        ymin=ymin, ymax=ymax*factor)
         if self.supportHist is None:
             self.supportHist = self.stack.totalHist
         if not self.axisWasSet:
@@ -403,36 +408,33 @@ class DataMCPlot(object):
                 self.stack.totalHist.weighted.GetMaximumBin()
             )
             mx = max(mxsup, mxstack)
+
             if ymin is None:
                 ymin = 0.01
             if ymax is None:
-                ymax = mx*1.3
-            self.supportHist.GetYaxis().SetRangeUser(ymin, ymax)
+                ymax = mx*1.4
+#                ymax = mx*3.
+            self.supportHist.GetYaxis().SetRangeUser(ymin, ymax*factor)
             self.axisWasSet = True
         for hist in self.nostack:
-
-#            import pdb; pdb.set_trace()
-
-
             if self.blindminx:
                 hist.Blind(self.blindminx, self.blindmaxx)
 
-#            hist.Draw('same')
-
-#            print 'Check', hist.name, self.signal2show
-
-            if hist.name.find('LQ')!=-1 or hist.name.find('Zprime')!=-1:
-                if hist.name in self.signal2show:
-#                    print 'PASS!!!!!!!!!!!!!!!!!!!!!!!'
-                    hist.Draw('same')
+#            print '!!!!!!!!!!!!!!!!!!!', hist.name 
+            if hist.name.find('data')!=-1:
+                hist.Draw('EP0same')
             else:
-                hist.Draw('same')
+                hist.Draw('HISTsame')
 
-
-        if self.supportHist.weighted.GetMaximumBin() < self.supportHist.weighted.GetNbinsX()/2:
-#            self.legendBorders = 0.62, 0.46, 0.88, 0.89
-            self.legendPos = 'right'
-
+#        print 'check!!!!!', self.supportHist.weighted.GetMaximumBin(), self.supportHist.weighted.GetNbinsX()/2
+        #if self.supportHist.weighted.GetMaximumBin() < self.supportHist.weighted.GetNbinsX()/2:
+            #self.legendBorders = 0.45, 0.58, 0.88, 0.87
+#            self.legendPos = 'right'
+            ##Split legend into columns
+        #if len(self.stack) > 4 or len(self.nostack) > 4 :    
+        #    self.legendBorders = 0.20, 0.58, 0.54, 0.87  
+        #    self.legendColumns = 3 
+        
         self.DrawLegend(print_norm=print_norm)
         if TPad.Pad():
             TPad.Pad().Update()
@@ -449,6 +451,7 @@ class DataMCPlot(object):
                                   ymin=ymin, ymax=ymax)
         for hist in self.nostack:
             hist.obj.DrawNormalized('same')
+
         self.DrawLegend()
         if TPad.Pad():
             TPad.Pad().Update()
@@ -481,9 +484,10 @@ class DataMCPlot(object):
             outf_dir.cd()
 
         for hist in self._SortedHistograms():
-            'Writing', hist, 'as', hist.name
-            # blinding ! 
-#            if hist.name != 'data_obs':
+            print 'Writing', hist, 'as', hist.name
+            hist.weighted.GetXaxis().SetLabelSize(0.05)
+            hist.weighted.SetName(hist.name)
+            hist.weighted.SetTitle(hist.name)
             hist.weighted.Write(hist.name)
         outf.Write()
 
@@ -518,8 +522,9 @@ class DataMCPlot(object):
             pref = self._GetHistPref(hist.name)
             hist.layer = pref['layer']
             hist.SetStyle(pref['style'])
-#            print hist.name
             hist.legendLine = pref['legend']
+
+#            print pref, hist.layer, hist.SetStyle, hist.legendLine
 
     def __str__(self):
         if self.stack is None:
