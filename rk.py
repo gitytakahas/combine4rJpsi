@@ -21,8 +21,8 @@ dict = OrderedDict()
 #dict['rks_high'] = {'val':0.69, 'up':0.11, 'down':-0.07, 'sup':0.05, 'sdown':-0.05, 'q2low':1.1, 'q2high':6.0, 'leg':'R_{K^{*0}}'}
 #dict['rksp'] = {'val':0.7, 'up':0.18, 'down':-0.13, 'sup':0.03, 'sdown':-0.04, 'q2low':0.045, 'q2high':6.0, 'leg':'R_{K^{*+}}'}
 #dict['rk'] = {'val':0.846, 'up':0.042, 'down':-0.039, 'sup':0.013, 'sdown':-0.012, 'q2low':1.1, 'q2high':6.0, 'leg':'R_{K^{+}}'}
-dict['#tau_{had} combined'] = {'val':0.71, 'up':0.054, 'down':-0.054, 'sup':0.168, 'sdown':-0.155, 'leg':'#tau_{had}, comb.'}
-dict['#tau_{had} 2018'] = {'val':0.71, 'up':0.059, 'down':-0.059, 'sup':0.187, 'sdown':-0.176, 'leg':'#tau_{had}, 2018'}
+dict['#tau_{had} combined'] = {'val':0.71, 'up':0.054, 'down':-0.054, 'sup':0.164, 'sdown':-0.153, 'leg':'#tau_{had}, comb.'}
+dict['#tau_{had} 2018'] = {'val':0.71, 'up':0.059, 'down':-0.059, 'sup':0.181, 'sdown':-0.173, 'leg':'#tau_{had}, 2018'}
 dict['#tau_{had} 2017'] = {'val':0.71, 'up':0.064, 'down':-0.064, 'sup':0.213, 'sdown':-0.206, 'leg':'#tau_{had}, 2017'}
 dict['#tau_{had} 2016'] = {'val':0.71, 'up':0.069, 'down':-0.068, 'sup':0.247, 'sdown':-0.243, 'leg':'#tau_{had}, 2016'}
 #dict['#tau_{lep} 2018'] = {'val':0.71, 'up':0.094, 'down':-0.093, 'sup':0.252, 'sdown':-0.249, 'leg':'#tau_{lep}, 2018'}
@@ -131,7 +131,7 @@ line.Draw()
 #line2.Draw()
 
 
-tbox = TBox(0.25,0,0.28,len(dict))
+tbox = TBox(0.2544,0,0.2620,len(dict))
 tbox.SetLineWidth(3)
 tbox.SetLineColor(2)
 tbox.SetFillStyle(3001)

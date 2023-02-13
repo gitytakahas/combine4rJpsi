@@ -35,7 +35,7 @@ if os.path.isdir(jobdir):
 
 ensureDir(jobdir)
 
-njobs = 50
+njobs = 200
 
 for ijob in range(njobs):
 
@@ -46,7 +46,7 @@ for ijob in range(njobs):
     with open(jobscript) as f:
         data_lines = f.read()
         
-        data_lines = data_lines.replace('SEED', str(ijob))
+        data_lines = data_lines.replace('SEED', str(100+ijob))
         
         with open(jobscript, mode="w") as f:
             f.write(data_lines)

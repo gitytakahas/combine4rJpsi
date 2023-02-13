@@ -15,9 +15,9 @@ process 	0	1	2	3	0	1	2	3
 rate 	193.82	83.71	282.21	1	298.23	243.06	436.33	1	
 --------------------------------------------------------------------------------
 fakeNorm_2016 	lnN	-	-	-	1.3	-	-	-	-	
-bcnorm_2016 	lnN	1.12	1.12	1.12	-	1.12	1.12	1.12	-	
 trigger_2016 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
 sfIdJpsi_2016 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
+bcnorm_2016 	lnN	1.3	1.3	1.3	-	1.3	1.3	1.3	-	
 sfReco_2016 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
 bccorr 	shape	1.0	1.0	1.0	-	1.0	1.0	1.0	-	
 bglvar_e0 	shape	1.0	-	-	-	1.0	-	-	-	
@@ -31,7 +31,7 @@ bglvar_e7 	shape	1.0	-	-	-	1.0	-	-	-
 bglvar_e8 	shape	1.0	-	-	-	1.0	-	-	-	
 bglvar_e9 	shape	1.0	-	-	-	1.0	-	-	-	
 br_jpsi_hc_over_mu 	lnN	-	-	1.38	-	-	-	1.38	-	
-br_others 	lnN	-	1.38	-	-	-	1.38	-	-	
+br_others 	lnN	-	1.5	-	-	-	1.5	-	-	
 ctau 	shape	1.0	1.0	1.0	-	1.0	1.0	1.0	-	
 puWeight 	shape	1.0	1.0	1.0	-	1.0	1.0	1.0	-	
 tauBr 	shape	1.0	-	-	-	1.0	-	-	-	
@@ -154,4 +154,4 @@ bg_bin13_tauhad_sb_2016 	 flatParam
 bg_bin14_tauhad_sb_2016 	 flatParam
 bg_bin15_tauhad_sb_2016 	 flatParam
 bg_bin16_tauhad_sb_2016 	 flatParam
-syst group = fakeNorm_2016 bcnorm_2016 trigger_2016 sfIdJpsi_2016 sfReco_2016 bccorr bglvar_e0 bglvar_e1 bglvar_e2 bglvar_e3 bglvar_e4 bglvar_e5 bglvar_e6 bglvar_e7 bglvar_e8 bglvar_e9 br_jpsi_hc_over_mu br_others ctau puWeight tauBr tauReco 
+syst group = fakeNorm_2016 trigger_2016 sfIdJpsi_2016 bcnorm_2016 sfReco_2016 bccorr bglvar_e0 bglvar_e1 bglvar_e2 bglvar_e3 bglvar_e4 bglvar_e5 bglvar_e6 bglvar_e7 bglvar_e8 bglvar_e9 br_jpsi_hc_over_mu br_others ctau puWeight tauBr tauReco 

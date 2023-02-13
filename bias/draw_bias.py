@@ -1,12 +1,12 @@
 import os, copy
-from ROOT import gStyle, TCanvas, TLegend, TH1F, gROOT, TFile
+from ROOT import gStyle, TCanvas, TLegend, TH1F, gROOT, TFile, TChain
 from officialStyle import officialStyle
 #from common.DisplayManager_postfit import DisplayManager
 #from common.DataMCPlot import *
 
 
-gROOT.SetBatch(True)
-#gROOT.SetBatch(False)
+#gROOT.SetBatch(True)
+gROOT.SetBatch(False)
 officialStyle(gStyle)
 gStyle.SetOptTitle(0)
 gStyle.SetOptStat("emr")
@@ -30,17 +30,19 @@ gStyle.SetOptFit(111)
 #os.system('rm -f fitDiagnostics.root')
 #os.system('hadd -f fitDiagnostics.root fitDiagnostics*.root')
 
-filename = 'test.root'
 
-file = TFile(filename)
-tree = file.Get('tree_fit_sb')
+ch = TChain('tree_fit_sb')
+ch.Add('fitDiagnostics*.root')
+
+#file = TFile(filename)
+#tree = file.Get('tree_fit_sb')
 
 #bias = TH1F('bias', 'bias', 120,-6,6)
 bias = TH1F('bias', 'bias', 50,-6,6)
 bias.GetXaxis().SetTitle('Pull')
 bias.GetYaxis().SetTitle('a.u.')
 
-tree.Draw("(r-0.71)/(0.5*(rHiErr+rLoErr))>>bias", "fit_status==0")
+ch.Draw("(r-0.71)/(0.5*(rHiErr+rLoErr))>>bias", "fit_status==0 && rHiErr > 0.1")
 
 canvas = TCanvas('canvas')
 bias.Draw()

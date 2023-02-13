@@ -51,9 +51,12 @@ sysdict = OrderedDict()
 
 for year in eras:
     sysdict['fakeNorm_' + year] = {'type':'lnN', 'proc':['fakes'], 'size':1.3}
-    sysdict['bcnorm_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.12}
     sysdict['trigger_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
     sysdict['sfIdJpsi_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
+
+    if year!='2018':
+        sysdict['bcnorm_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.3}
+
 
     if year=='2018':
         sysdict['sfReco'] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
@@ -73,7 +76,7 @@ sysdict['bglvar_e7'] = {'type':'shape', 'proc':['jpsi_tau'], 'size':1.0}
 sysdict['bglvar_e8'] = {'type':'shape', 'proc':['jpsi_tau'], 'size':1.0}
 sysdict['bglvar_e9'] = {'type':'shape', 'proc':['jpsi_tau'], 'size':1.0}
 sysdict['br_jpsi_hc_over_mu'] = {'type':'lnN', 'proc':['jpsi_hc'], 'size':1.38}
-sysdict['br_others'] = {'type':'lnN', 'proc':['bc_others'], 'size':1.38}
+sysdict['br_others'] = {'type':'lnN', 'proc':['bc_others'], 'size':1.5}
 sysdict['ctau'] = {'type':'shape', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.0}
 sysdict['puWeight'] = {'type':'shape', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.0}
 sysdict['tauBr'] = {'type':'shape', 'proc':['jpsi_tau'], 'size':1.0}

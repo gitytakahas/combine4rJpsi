@@ -2,6 +2,7 @@ workspace="/work/ytakahas/work/Combination/CMSSW_10_2_13/src/CombineHarvester/co
 signal_for_gof="--fixedSignalStrength=0.71"
 #signal_for_gof="--fixedSignalStrength=0."
 ntoys="250"
+#option="--setRobustFitAlgo=Minuit2 --setRobustFitStrategy=0 --setRobustFitTolerance=0.2 --X-rtd MINIMIZER_analytic --cminFallbackAlgo Minuit2,0:0.5 --cminFallbackAlgo Minuit2,0:1.0 --cminPreScan --cminPreFit 1"
 
 #method="KS"
 #method="saturated"
@@ -10,6 +11,7 @@ ntoys="250"
 #cd datacard 
 
 for method in "KS" "saturated"
+#for method in "KS"
 do
 #    combine -M GoodnessOfFit ${workspace} --algo=${method} -n _${method} --rMin -3 --rMax 3 --toysFrequentist --cminDefaultMinimizerStrategy 0 ${signal_for_gof} -m 125
     

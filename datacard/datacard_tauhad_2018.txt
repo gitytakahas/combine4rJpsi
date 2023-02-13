@@ -1,6 +1,6 @@
 imax 2
 jmax 3
-kmax 118
+kmax 117
 --------------------------------------------------------------------------------
 shapes 	 * 	 tauhad_sr_2018 	 param_tauhad_ws.root wspace:$PROCESS_tauhad_sr_2018 wspace:$PROCESS_$SYSTEMATIC_tauhad_sr_2018
 shapes 	 * 	 tauhad_sb_2018 	 param_tauhad_ws.root wspace:$PROCESS_tauhad_sb_2018 wspace:$PROCESS_$SYSTEMATIC_tauhad_sb_2018
@@ -15,7 +15,6 @@ process 	0	1	2	3	0	1	2	3
 rate 	560.82	149.26	725.03	1	708.94	542.47	1199.47	1	
 --------------------------------------------------------------------------------
 fakeNorm_2018 	lnN	-	-	-	1.3	-	-	-	-	
-bcnorm_2018 	lnN	1.12	1.12	1.12	-	1.12	1.12	1.12	-	
 trigger_2018 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
 sfIdJpsi_2018 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
 sfReco 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
@@ -31,7 +30,7 @@ bglvar_e7 	shape	1.0	-	-	-	1.0	-	-	-
 bglvar_e8 	shape	1.0	-	-	-	1.0	-	-	-	
 bglvar_e9 	shape	1.0	-	-	-	1.0	-	-	-	
 br_jpsi_hc_over_mu 	lnN	-	-	1.38	-	-	-	1.38	-	
-br_others 	lnN	-	1.38	-	-	-	1.38	-	-	
+br_others 	lnN	-	1.5	-	-	-	1.5	-	-	
 ctau 	shape	1.0	1.0	1.0	-	1.0	1.0	1.0	-	
 puWeight 	shape	1.0	1.0	1.0	-	1.0	1.0	1.0	-	
 tauBr 	shape	1.0	-	-	-	1.0	-	-	-	
@@ -154,4 +153,4 @@ bg_bin13_tauhad_sb_2018 	 flatParam
 bg_bin14_tauhad_sb_2018 	 flatParam
 bg_bin15_tauhad_sb_2018 	 flatParam
 bg_bin16_tauhad_sb_2018 	 flatParam
-syst group = fakeNorm_2018 bcnorm_2018 trigger_2018 sfIdJpsi_2018 sfReco bccorr bglvar_e0 bglvar_e1 bglvar_e2 bglvar_e3 bglvar_e4 bglvar_e5 bglvar_e6 bglvar_e7 bglvar_e8 bglvar_e9 br_jpsi_hc_over_mu br_others ctau puWeight tauBr tauReco 
+syst group = fakeNorm_2018 trigger_2018 sfIdJpsi_2018 sfReco bccorr bglvar_e0 bglvar_e1 bglvar_e2 bglvar_e3 bglvar_e4 bglvar_e5 bglvar_e6 bglvar_e7 bglvar_e8 bglvar_e9 br_jpsi_hc_over_mu br_others ctau puWeight tauBr tauReco 
