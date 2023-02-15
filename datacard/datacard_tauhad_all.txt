@@ -1,6 +1,6 @@
 imax 6
 jmax 3
-kmax 319
+kmax 322
 --------------------------------------------------------------------------------
 shapes 	 * 	 tauhad_sr_2016 	 param_tauhad_ws.root wspace:$PROCESS_tauhad_sr_2016 wspace:$PROCESS_$SYSTEMATIC_tauhad_sr_2016
 shapes 	 * 	 tauhad_sb_2016 	 param_tauhad_ws.root wspace:$PROCESS_tauhad_sb_2016 wspace:$PROCESS_$SYSTEMATIC_tauhad_sb_2016
@@ -23,15 +23,18 @@ trigger_2016 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1
 sfIdJpsi_2016 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
 bcnorm_2016 	lnN	1.3	1.3	1.3	-	1.3	1.3	1.3	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	
 sfReco_2016 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
+fakeshape_2016 	shape	-	-	-	1.0	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	
 fakeNorm_2017 	lnN	-	-	-	-	-	-	-	-	-	-	-	1.3	-	-	-	-	-	-	-	-	-	-	-	-	
 trigger_2017 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
 sfIdJpsi_2017 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
 bcnorm_2017 	lnN	-	-	-	-	-	-	-	-	1.3	1.3	1.3	-	1.3	1.3	1.3	-	-	-	-	-	-	-	-	-	
 sfReco_2017 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
+fakeshape_2017 	shape	-	-	-	-	-	-	-	-	-	-	-	1.0	-	-	-	-	-	-	-	-	-	-	-	-	
 fakeNorm_2018 	lnN	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	1.3	-	-	-	-	
 trigger_2018 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
 sfIdJpsi_2018 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
 sfReco 	lnN	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	1.03	1.03	1.03	-	
+fakeshape_2018 	shape	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	1.0	-	-	-	-	
 bccorr 	shape	1.0	1.0	1.0	-	1.0	1.0	1.0	-	1.0	1.0	1.0	-	1.0	1.0	1.0	-	1.0	1.0	1.0	-	1.0	1.0	1.0	-	
 bglvar_e0 	shape	1.0	-	-	-	1.0	-	-	-	1.0	-	-	-	1.0	-	-	-	1.0	-	-	-	1.0	-	-	-	
 bglvar_e1 	shape	1.0	-	-	-	1.0	-	-	-	1.0	-	-	-	1.0	-	-	-	1.0	-	-	-	1.0	-	-	-	
@@ -403,4 +406,4 @@ bg_bin13_tauhad_sb_2018 	 flatParam
 bg_bin14_tauhad_sb_2018 	 flatParam
 bg_bin15_tauhad_sb_2018 	 flatParam
 bg_bin16_tauhad_sb_2018 	 flatParam
-syst group = fakeNorm_2016 trigger_2016 sfIdJpsi_2016 bcnorm_2016 sfReco_2016 fakeNorm_2017 trigger_2017 sfIdJpsi_2017 bcnorm_2017 sfReco_2017 fakeNorm_2018 trigger_2018 sfIdJpsi_2018 sfReco bccorr bglvar_e0 bglvar_e1 bglvar_e2 bglvar_e3 bglvar_e4 bglvar_e5 bglvar_e6 bglvar_e7 bglvar_e8 bglvar_e9 br_jpsi_hc_over_mu br_others ctau puWeight tauBr tauReco 
+syst group = fakeNorm_2016 trigger_2016 sfIdJpsi_2016 bcnorm_2016 sfReco_2016 fakeshape_2016 fakeNorm_2017 trigger_2017 sfIdJpsi_2017 bcnorm_2017 sfReco_2017 fakeshape_2017 fakeNorm_2018 trigger_2018 sfIdJpsi_2018 sfReco fakeshape_2018 bccorr bglvar_e0 bglvar_e1 bglvar_e2 bglvar_e3 bglvar_e4 bglvar_e5 bglvar_e6 bglvar_e7 bglvar_e8 bglvar_e9 br_jpsi_hc_over_mu br_others ctau puWeight tauBr tauReco 
