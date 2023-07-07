@@ -20,7 +20,11 @@ file="impacts_comb_scale.json"
 
 combineTool.py -M Impacts -d ${workspace} -m 125 -o ${file} ${toy}
 plotImpacts.py -i ${file} -o impacts --blind
-convert -density 160 -trim impacts.pdf[0] -quality 100 impacts.png
+#plotImpacts.py -i ${file} -o impacts
 
+for ii in 0 1 2 3 4
+do
+    convert -density 160 -trim impacts.pdf[${ii}] -quality 100 impacts_${ii}.png
+done
 
 #cd -

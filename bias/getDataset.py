@@ -46,7 +46,7 @@ for ijob in range(njobs):
     with open(jobscript) as f:
         data_lines = f.read()
         
-        data_lines = data_lines.replace('SEED', str(100+ijob))
+        data_lines = data_lines.replace('SEED', str(10000000+ijob))
         
         with open(jobscript, mode="w") as f:
             f.write(data_lines)

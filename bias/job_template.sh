@@ -35,7 +35,7 @@ combine ${workspace} -M FitDiagnostics --toysFrequentist --toysFile higgsCombine
 
 #ls -lart $TMPDIR
 
-#xrdcp -f $TMPDIR root://t3dcachedb03.psi.ch/OUTDIRECTORY
+xrdcp -f $TMPDIR root://t3dcachedb03.psi.ch/OUTDIRECTORY
 
 # cleaning of temporal working dir when job was completed:
 #rm -rf ${TMPDIR}

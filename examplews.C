@@ -6,9 +6,20 @@ void examplews(){
   gROOT->SetBatch();
   gSystem->Load("libHiggsAnalysisCombinedLimit.so");
 
+
+  bool isScale = false;
+  //bool isScale = true;
+
   // Output file and workspace
-  //  TFile *fOut = new TFile("datacard/param_tauhad_ws.root","RECREATE");
-  TFile *fOut = new TFile("datacard/param_tauhad_ws_scale.root","RECREATE");
+  TFile *fOut;
+
+  if(isScale){
+    fOut = new TFile("datacard/param_tauhad_ws_scale.root","RECREATE");
+  }else{
+    fOut = new TFile("datacard/param_tauhad_ws.root","RECREATE");
+  }
+  
+
   RooWorkspace wspace("wspace","wspace");
 
   TString prefix = "tauhad";
@@ -26,9 +37,15 @@ void examplews(){
     //////////////////////////////////
     // control region 
     //////////////////////////////////
-    
-    //    TFile *input_file = new TFile("/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/tau_rhomass_unrolled_var.root");
-    TFile *input_file = new TFile("/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/tau_rhomass_unrolled_var_scaled.root");
+    TFile *input_file; 
+
+    if(isScale){
+      input_file = new TFile("/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_simultaneous/tau_rhomass_unrolled_var_scaled.root");
+    }else{
+      input_file = new TFile("/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_simultaneous/tau_rhomass_unrolled_var.root");
+    }
+
+
     TString target_sr = prefix;
     target_sr += "_sr_";
     target_sr += year;
@@ -174,7 +191,6 @@ void examplews(){
     ///////////////////////////////////////
 
 
-    //  TFile *file_sr = new TFile("/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/2018/tau_rhomass_unrolled_coarse_sr.root");
     //TFile *file_sr = new TFile("output/sm_cards/LIMITS/common/rJpsi_sr_1_2018_90.input.root");
     
     input_file->cd();
@@ -284,32 +300,32 @@ void examplews(){
 
 
 
-    std::vector<RooRealVar> bins_up;
-    std::vector<RooRealVar> bins_down;
-
-    for(int i=1; i<=nbins; i++){
-    
-      stringstream s;
-      s << i;
-    
-      string mystring1_up = "envelope_bin" + s.str() + "_" + _str1 + ", up";
-      string mystring2_up = "envelope for " + _str2 + " in control region, bin " + s.str() + ", up";
-      
-      double val_up = envelope_up->GetBinContent(i);
-      RooRealVar bin_up(mystring1_up.c_str(), mystring2_up.c_str(), val_up);
-      
-      bins_up.push_back(bin_up);
-
-      string mystring1_down = "envelope_bin" + s.str() + "_" + _str1 + ", down";
-      string mystring2_down = "envelope for " + _str2 + " in control region, bin " + s.str() + ", down";
-      
-      double val_down = envelope_down->GetBinContent(i);
-      RooRealVar bin_down(mystring1_down.c_str(), mystring2_down.c_str(), val_down);
-      
-      bins_down.push_back(bin_down);
-
-
-    }
+//    std::vector<RooRealVar> bins_up;
+//    std::vector<RooRealVar> bins_down;
+//
+//    for(int i=1; i<=nbins; i++){
+//    
+//      stringstream s;
+//      s << i;
+//    
+//      string mystring1_up = "envelope_bin" + s.str() + "_" + _str1 + ", up";
+//      string mystring2_up = "envelope for " + _str2 + " in control region, bin " + s.str() + ", up";
+//      
+//      double val_up = envelope_up->GetBinContent(i);
+//      RooRealVar bin_up(mystring1_up.c_str(), mystring2_up.c_str(), val_up);
+//      
+//      bins_up.push_back(bin_up);
+//
+//      string mystring1_down = "envelope_bin" + s.str() + "_" + _str1 + ", down";
+//      string mystring2_down = "envelope for " + _str2 + " in control region, bin " + s.str() + ", down";
+//      
+//      double val_down = envelope_down->GetBinContent(i);
+//      RooRealVar bin_down(mystring1_down.c_str(), mystring2_down.c_str(), val_down);
+//      
+//      bins_down.push_back(bin_down);
+//
+//
+//    }
 
 
 
@@ -342,21 +358,21 @@ void examplews(){
       RooFormulaVar bin(mystring1.c_str(),mystring2.c_str()," @0*@1",RooArgList(TF, bins[i-1]));
       bins_sr.push_back(bin);
       
-      //// up variations ...
-
-      string mystring1_up = "bg_bin" + s.str() + "_" + _str3 + "_up";
-      string mystring2_up = "Background yield for " + _str2 + " in signal region, bin " + s.str() + ", up variation";
-      
-      RooFormulaVar bin_up(mystring1_up.c_str(),mystring2_up.c_str()," @0*@1*@2",RooArgList(TF, bins[i-1], bins_up[i-1]));
-      bins_sr_up.push_back(bin_up);
-
-      //// down variations ...
-
-      string mystring1_down = "bg_bin" + s.str() + "_" + _str3 + "_down";
-      string mystring2_down = "Background yield for " + _str2 + " in signal region, bin " + s.str() + ", down variation";
-      
-      RooFormulaVar bin_down(mystring1_down.c_str(),mystring2_down.c_str()," @0*@1*@2",RooArgList(TF, bins[i-1], bins_down[i-1]));
-      bins_sr_down.push_back(bin_down);
+//      //// up variations ...
+//
+//      string mystring1_up = "bg_bin" + s.str() + "_" + _str3 + "_up";
+//      string mystring2_up = "Background yield for " + _str2 + " in signal region, bin " + s.str() + ", up variation";
+//      
+//      RooFormulaVar bin_up(mystring1_up.c_str(),mystring2_up.c_str()," @0*@1*@2",RooArgList(TF, bins[i-1], bins_up[i-1]));
+//      bins_sr_up.push_back(bin_up);
+//
+//      //// down variations ...
+//
+//      string mystring1_down = "bg_bin" + s.str() + "_" + _str3 + "_down";
+//      string mystring2_down = "Background yield for " + _str2 + " in signal region, bin " + s.str() + ", down variation";
+//      
+//      RooFormulaVar bin_down(mystring1_down.c_str(),mystring2_down.c_str()," @0*@1*@2",RooArgList(TF, bins[i-1], bins_down[i-1]));
+//      bins_sr_down.push_back(bin_down);
 
     }
 
@@ -379,51 +395,60 @@ void examplews(){
 
 
 
-    RooArgList fakes_sr_bins_up;
-    for(int i=0; i<nbins; i++){
-      fakes_sr_bins_up.add(bins_sr_up[i]);
-    }
+//    RooArgList fakes_sr_bins_up;
+//    for(int i=0; i<nbins; i++){
+//      fakes_sr_bins_up.add(bins_sr_up[i]);
+//    }
+//
+//
+//    string _str_fake_up = "fakes_fakeshape_" + _str2 + "Up_" + _str3;
+//    string _str_fake_norm_up = "fakes_fakeshape_" + _str2 + "Up_" + _str3 + "_norm";
+//
+//    //    string _str_fake_up = "fakes_" + _str3 + "_up";
+//    //    string _str_fake_norm_up = "fakes_" + _str3 + "_norm_up";
+//
+//    string _str_fake_up = "fakes_fakeshape_" + _str2 + "Up_" + _str3;
+//    string _str_fake_des_up = "Background PDF in signal region for " + _str2 + ", up variation";
+//    string _str_fake_norm_des_up = "Total Number of events from background in signal region for " + _str2 + ", up variation";
+//
+//    RooParametricHist rph_fakes_sr_up(_str_fake_up.c_str(), _str_fake_des_up.c_str(),var,fakes_sr_bins_up, *data_histo_sr);
+//    RooAddition rph_fakes_sr_norm_up(_str_fake_norm_up.c_str(), _str_fake_norm_des_up.c_str(),fakes_sr_bins_up); 
+//    
+//    wspace.import(rph_fakes_sr_up);
+//    wspace.import(rph_fakes_sr_norm_up, RooFit::RecycleConflictNodes());
+//
+//
+//
+//
+//    RooArgList fakes_sr_bins_down;
+//    for(int i=0; i<nbins; i++){
+//      fakes_sr_bins_down.add(bins_sr_down[i]);
+//    }
+//
+//
+//    string _str_fake_down = "fakes_fakeshape_" + _str2 + "Down_" + _str3;
+//    string _str_fake_norm_down = "fakes_fakeshape_" + _str2 + "Down_" + _str3 + "_norm";
+//
+//    string _str_fake_down = "fakes_fakeshape_" + _str2 + "Down_" + _str3;
+//    string _str_fake_des_down = "Background PDF in signal region for " + _str2 + ", down variation";
+//    string _str_fake_norm_des_down = "Total Number of events from background in signal region for " + _str2 + ", down variation";
+//
+//    RooParametricHist rph_fakes_sr_down(_str_fake_down.c_str(), _str_fake_des_down.c_str(),var,fakes_sr_bins_down, *data_histo_sr);
+//    RooAddition rph_fakes_sr_norm_down(_str_fake_norm_down.c_str(), _str_fake_norm_des_down.c_str(),fakes_sr_bins_down); 
+//    
+//    wspace.import(rph_fakes_sr_down);
+//    wspace.import(rph_fakes_sr_norm_down, RooFit::RecycleConflictNodes());
 
 
-    string _str_fake_up = "fakes_fakeshape_" + _str2 + "Up_" + _str3;
-    string _str_fake_norm_up = "fakes_fakeshape_" + _str2 + "Up_" + _str3 + "_norm";
-
-    //    string _str_fake_up = "fakes_" + _str3 + "_up";
-    //    string _str_fake_norm_up = "fakes_" + _str3 + "_norm_up";
-
-    string _str_fake_des_up = "Background PDF in signal region for " + _str2 + ", up variation";
-    string _str_fake_norm_des_up = "Total Number of events from background in signal region for " + _str2 + ", up variation";
-
-    RooParametricHist rph_fakes_sr_up(_str_fake_up.c_str(), _str_fake_des_up.c_str(),var,fakes_sr_bins_up, *data_histo_sr);
-    RooAddition rph_fakes_sr_norm_up(_str_fake_norm_up.c_str(), _str_fake_norm_des_up.c_str(),fakes_sr_bins_up); 
-    
-    wspace.import(rph_fakes_sr_up);
-    wspace.import(rph_fakes_sr_norm_up, RooFit::RecycleConflictNodes());
 
 
-
-
-    RooArgList fakes_sr_bins_down;
-    for(int i=0; i<nbins; i++){
-      fakes_sr_bins_down.add(bins_sr_down[i]);
-    }
-
-
-    string _str_fake_down = "fakes_fakeshape_" + _str2 + "Down_" + _str3;
-    string _str_fake_norm_down = "fakes_fakeshape_" + _str2 + "Down_" + _str3 + "_norm";
-
-    string _str_fake_des_down = "Background PDF in signal region for " + _str2 + ", down variation";
-    string _str_fake_norm_des_down = "Total Number of events from background in signal region for " + _str2 + ", down variation";
-
-    RooParametricHist rph_fakes_sr_down(_str_fake_down.c_str(), _str_fake_des_down.c_str(),var,fakes_sr_bins_down, *data_histo_sr);
-    RooAddition rph_fakes_sr_norm_down(_str_fake_norm_down.c_str(), _str_fake_norm_des_down.c_str(),fakes_sr_bins_down); 
-    
-    wspace.import(rph_fakes_sr_down);
-    wspace.import(rph_fakes_sr_norm_down, RooFit::RecycleConflictNodes());
-
-
-
-
+//    TH1F background_up("tbkg_CR_JESUp","",nbins,xbins);
+//    background_up.SetBinContent(1,CRbin1.getVal()*1.01);
+//    background_up.SetBinContent(2,CRbin2.getVal()*1.02);
+//    background_up.SetBinContent(3,CRbin3.getVal()*1.03);
+//    background_up.SetBinContent(4,CRbin4.getVal()*1.04);
+//    RooDataHist bkg_CRhist_sysUp("bkg_CR_JESUp","Bkg sys up",vars,&background_up);
+//    wspace.import(bkg_CRhist_sysUp);
 
 
 
@@ -436,30 +461,29 @@ void examplews(){
 
 
 
+    string fakename_up = "fakes_paramUp_" + _str2;
+    string fakename_down = "fakes_paramDown_" + _str2;
 
-//    TH1D fakes_param_up("fakes_ParamUp_sr","", nbins, xmin, xmax);
-//    TH1D fakes_param_down("fakes_ParamDown_sr","", nbins, xmin, xmax);
-//    
-//    double p0 = 0.871;
-//    double p1 = 0.009;
-//    
-//    
-//    for(int i=1; i<=nbins; i++){
-//      //    float perc = (fakes_up_ch1_tmp->GetBinContent(i))/fakes_histo_ch2->GetBinContent(i)      ;
-//      //    std::cout<<"percentage "<<perc<<std::endl;
-//      double perc_up = p0 + p1*i;
-//      double perc_down = 2 - p0 - p1*i;
-//      
-//      fakes_param_up.SetBinContent(i, bins_sr[i-1].getVal()*perc_up);
-//      fakes_param_down.SetBinContent(i, bins_sr[i-1].getVal()*perc_down);
-//      
-//    }
-//    
-//    RooDataHist rdh_fakes_param_up("fakes_ParamUp_sr","Bkg sys up",vars,&fakes_param_up);
-//    wspace.import(rdh_fakes_param_up);
-//    
-//    RooDataHist rdh_fakes_param_down("fakes_ParamDown_sr","Bkg sys down",vars,&fakes_param_down);
-//    wspace.import(rdh_fakes_param_down);
+    TH1F fakes_param_up(fakename_up.c_str(), "", nbins, xmin, xmax);
+    TH1F fakes_param_down(fakename_down.c_str(),"", nbins, xmin, xmax);
+    
+    for(int i=1; i<=nbins; i++){
+      
+      fakes_param_up.SetBinContent(i, bins_sr[i-1].getVal()*envelope_up->GetBinContent(i));
+      fakes_param_down.SetBinContent(i, bins_sr[i-1].getVal()*envelope_down->GetBinContent(i));
+      
+    }
+    string _str_fake_up = "fakes_fakeshape_" + _str2 + "Up_" + _str3;
+    string _str_fake_des_up = "Background PDF in signal region for " + _str2 + ", up variation";
+    
+    RooDataHist rdh_fakes_param_up(_str_fake_up.c_str(), _str_fake_des_up.c_str(), vars,&fakes_param_up);
+    wspace.import(rdh_fakes_param_up);
+
+    string _str_fake_down = "fakes_fakeshape_" + _str2 + "Down_" + _str3;
+    string _str_fake_des_down = "Background PDF in signal region for " + _str2 + ", down variation";
+    
+    RooDataHist rdh_fakes_param_down(_str_fake_down.c_str(), _str_fake_des_down.c_str(), vars,&fakes_param_down);
+    wspace.import(rdh_fakes_param_down);
 
     /////
 /////

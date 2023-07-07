@@ -51,7 +51,7 @@ for ijob in range(njobs):
         with open(jobscript, mode="w") as f:
             f.write(data_lines)
 
-        command = 'sbatch -p short --account=t3 --error=' + jobdir + '/err_' + str(ijob) + ' --output=' + jobdir + '/out_' + str(ijob) + ' ' + jobscript
+        command = 'sbatch -p standard --account=t3 --error=' + jobdir + '/err_' + str(ijob) + ' --output=' + jobdir + '/out_' + str(ijob) + ' ' + jobscript
 
         print(command)
         os.system(command)

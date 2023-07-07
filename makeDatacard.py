@@ -13,10 +13,10 @@ if options.year!='all':
     eras = [options.year]
 
 
-filename = "/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/tau_rhomass_unrolled_var.root"
+filename = "/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_simultaneous/tau_rhomass_unrolled_var.root"
 
 if options.scale:
-    filename = "/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_sb3p5_sr4_simultaneous/tau_rhomass_unrolled_var_scaled.root"
+    filename = "/work/ytakahas/work/analysis/CMSSW_10_2_10/src/rJpsi/anal/combine_simultaneous/tau_rhomass_unrolled_var_scaled.root"
 
 input_file = TFile(filename)
 
@@ -51,17 +51,20 @@ sysdict = OrderedDict()
 
 for year in eras:
     sysdict['fakeNorm_' + year] = {'type':'lnN', 'proc':['fakes'], 'size':1.3}
-    sysdict['trigger_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
-    sysdict['sfIdJpsi_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
+    sysdict['trigger_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.05}
+    sysdict['sfIdJpsi_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.04}
 
     if year!='2018':
-        sysdict['bcnorm_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.3}
+        sysdict['bcnorm_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.1}
 
 
     if year=='2018':
-        sysdict['sfReco'] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
+        sysdict['sfReco'] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.04}
     else:
-        sysdict['sfReco_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.03}
+        sysdict['sfReco_' + year] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.04}
+
+
+    sysdict['fakeshape_' + year] = {'type':'shape', 'proc':['fakes'], 'size':1.0}
 
 
 sysdict['bccorr'] = {'type':'shape', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.0}
@@ -80,8 +83,8 @@ sysdict['br_others'] = {'type':'lnN', 'proc':['bc_others'], 'size':1.5}
 sysdict['ctau'] = {'type':'shape', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.0}
 sysdict['puWeight'] = {'type':'shape', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.0}
 sysdict['tauBr'] = {'type':'shape', 'proc':['jpsi_tau'], 'size':1.0}
-sysdict['tauReco'] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.05}
-
+sysdict['tauReco'] = {'type':'lnN', 'proc':['jpsi_tau', 'bc_others', 'jpsi_hc'], 'size':1.069}
+sysdict['BcOthersShape'] = {'type':'shape', 'proc':['bc_others'], 'size':1.0}
 
 nbins = None
 
@@ -174,7 +177,7 @@ with open(output, mode="w") as f:
                 if process in var['proc']:
                     wstr = str(var['size'])
 
-                if nuisance.find('fakeNorm')!=-1 and process == 'fakes':
+                if (nuisance.find('fakeNorm')!=-1 or nuisance.find('fakeshape')!=-1) and process == 'fakes':
                     if bin.find('sb')!=-1: wstr = '-'
                     if bin.find('sr')!=-1:
                         _year = bin.split('_')[2]

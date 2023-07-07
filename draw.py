@@ -164,8 +164,10 @@ for ftype in ['fit_s', 'fit_b', 'prefit']:
 
             Histo._ApplyPrefs()
             print(Histo)
-            comparisonPlots(Histo, lumis[year], 'Plots/' + catname +'.gif')
+#            comparisonPlots(Histo, lumis[year], 'Plots/' + catname +'.gif')
             comparisonPlots(Histo, lumis[year], 'Plots/' + catname +'.pdf')
+            comparisonPlots(Histo, lumis[year], 'Plots/' + catname +'.C')
+#            comparisonPlots(Histo, lumis[year], 'Plots/' + catname +'.gif')
 
 
 
